@@ -13,7 +13,7 @@ public class App {
 		Client c = new Client(cp);
 		
 		c.connect("http://127.0.0.1:8001");
-		c.sendMessage("Wellington");
+		System.out.println(c.sendMessage("Wellington"));
 	}
 
 }

@@ -18,7 +18,7 @@ public class Client {
 	}
 	
 	
-	public void sendMessage(String message) {
-		protocol.sendMessage(message);
+	public String sendMessage(String message) {
+		return protocol.sendMessage(message);
 	}
 }

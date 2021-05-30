@@ -65,8 +65,7 @@ public class HTTP extends Protocol{
 			        result.write(buffer, 0, l);
 			    }
 			    
-			    System.out.println(result.toString(StandardCharsets.UTF_8)); 
-				return "";
+				return result.toString(StandardCharsets.UTF_8);
 			}
 			
 		} catch (UnsupportedEncodingException e) {
