@@ -5,34 +5,23 @@ import model.entity.Protocol;
 public class MQTT extends Protocol{
 
 	@Override
-	public boolean connectServer() {
+	public boolean init() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean connectClient() {
+	public boolean connect() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean disconnectServer() {
+	public boolean disconnect() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public boolean disconnectClient() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void sendMessage() {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }

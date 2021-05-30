@@ -2,37 +2,32 @@ package util.protocol.application;
 
 import model.entity.Protocol;
 
-public class HTTP extends Protocol{
+public class MQTT extends Protocol{
 
 	@Override
-	public boolean connectServer() {
+	public boolean init() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean connectClient() {
+	public boolean connect(String address) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean disconnectServer() {
+	public boolean desconnect() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean disconnectClient() {
+	public String sendMessage(String message) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
-	@Override
-	public void sendMessage() {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }
