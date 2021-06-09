@@ -11,7 +11,7 @@ public class TCP extends Protocol{
 	}
 
 	@Override
-	public boolean connect() {
+	public boolean connect(String address) {
 		// TODO Auto-generated method stub
 		return false;
 	}

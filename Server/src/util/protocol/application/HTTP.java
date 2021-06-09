@@ -27,22 +27,22 @@ public class HTTP extends Protocol {
 			server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
 			return true;
 		} catch (IOException e) {
-			System.out.println("Connection error:" + e.getMessage());
+			System.out.println("HTTP - Connection error:" + e.getMessage());
 			return false;
 		}
 	}
 
 	@Override
-	public boolean connect() {
+	public boolean connect(String address) {
 		try {
 
 			server.createContext("/offloading", new Handler());
 			server.setExecutor(null);
 			server.start();
-			System.out.println(" Server started on port 8001");
+			System.out.println("HTTP - Server started on port 8001");
 			return true;
 		} catch (Exception e) {
-			System.out.println("Start server error:" + e.getMessage());
+			System.out.println("HTTP - Start server error:" + e.getMessage());
 			return false;
 		}
 	}
@@ -51,10 +51,10 @@ public class HTTP extends Protocol {
 	public boolean disconnect() {
 		try {
 			server.stop(0);
-			System.out.println("Server stopped");
+			System.out.println("HTTP - Server stopped");
 			return true;
 		} catch (Exception e) {
-			System.out.println("Finish connection error:" + e.getMessage());
+			System.out.println("HTTP - Finish connection error:" + e.getMessage());
 			return false;
 		}
 	}
@@ -63,7 +63,7 @@ public class HTTP extends Protocol {
 
 		@Override
 		public void handle(HttpExchange exchange) throws IOException {
-			System.out.println("Serving the request");
+			System.out.println("HTTP - Serving the request");
 
 			if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
 				try {

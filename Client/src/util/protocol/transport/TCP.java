@@ -17,7 +17,7 @@ public class TCP extends Protocol{
 	}
 
 	@Override
-	public boolean desconnect() {
+	public boolean disconnect() {
 		// TODO Auto-generated method stub
 		return false;
 	}

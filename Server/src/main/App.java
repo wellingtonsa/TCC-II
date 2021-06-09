@@ -9,7 +9,7 @@ public class App {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Protocol sp = new HTTP();
+		Protocol sp = new MQTT();
 		Server s = new Server(sp);
 		
 		s.connect();

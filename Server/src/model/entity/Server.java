@@ -12,7 +12,7 @@ public class Server {
 	
 	public void connect() {
 		if(protocol.init()) {
-			protocol.connect();
+			protocol.connect("");
 		} 
 		
 	}

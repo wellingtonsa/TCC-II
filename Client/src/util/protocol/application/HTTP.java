@@ -33,14 +33,14 @@ public class HTTP extends Protocol{
 			
 			return true;
 		} catch (IOException e) {
-			System.out.println("Connection error:"+e.getMessage());
+			System.out.println("HTTP - Connection error:"+e.getMessage());
 			return false;
 		}
 		
 	}
 
 	@Override
-	public boolean desconnect() {
+	public boolean disconnect() {
 		return false;
 
 	}

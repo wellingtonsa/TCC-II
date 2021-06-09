@@ -9,7 +9,7 @@ public class App {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Protocol cp = new HTTP();
+		Protocol cp = new MQTT();
 		Client c = new Client(cp);
 		
 		c.connect("http://127.0.0.1:8001");
