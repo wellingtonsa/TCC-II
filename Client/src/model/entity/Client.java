@@ -13,9 +13,9 @@ public class Client {
 		this.protocol = protocol;
 	}
 	
-	public void connect(String address) {
+	public void connect(String ip, Integer port) {
 		if(protocol.init()) {
-			protocol.connect(address);
+			protocol.connect(ip, port);
 		}
 	}
 	

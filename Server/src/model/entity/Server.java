@@ -12,9 +12,9 @@ public class Server {
 		this.protocol = protocol;
 	}
 	
-	public void connect() {
+	public void connect(String ip, Integer port) {
 		if(protocol.init()) {
-			protocol.connect("");
+			protocol.connect(ip, port);
 		} 
 		
 	}

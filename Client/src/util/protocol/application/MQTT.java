@@ -23,7 +23,7 @@ public class MQTT implements ProtocolService{
 	}
 
 	@Override
-	public boolean connect(String address) {
+	public boolean connect(String ip, Integer port) {
 		try {
 			Callback cb = new Callback();
 			client = new MqttClient(BROKER_URL, UUID.randomUUID().toString());

@@ -22,23 +22,19 @@ public class HTTP implements ProtocolService {
 
 	@Override
 	public boolean init() {
-		try {
-			server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
-			return true;
-		} catch (IOException e) {
-			System.out.println("HTTP - Connection error:" + e.getMessage());
-			return false;
-		}
+		return true;
 	}
 
 	@Override
-	public boolean connect(String address) {
+	public boolean connect(String ip, Integer port) {
 		try {
 
+			server = HttpServer.create(new InetSocketAddress(ip, port), 0);
+			
 			server.createContext("/offloading", new Handler());
 			server.setExecutor(null);
 			server.start();
-			System.out.println("HTTP - Server started on port 8001");
+			System.out.println("HTTP - Server started on port "+port);
 			return true;
 		} catch (Exception e) {
 			System.out.println("HTTP - Start server error:" + e.getMessage());

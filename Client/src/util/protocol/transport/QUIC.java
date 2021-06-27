@@ -10,7 +10,7 @@ public class QUIC implements ProtocolService{
 	}
 
 	@Override
-	public boolean connect(String address) {
+	public boolean connect(String ip, Integer port) {
 		// TODO Auto-generated method stub
 		return false;
 	}

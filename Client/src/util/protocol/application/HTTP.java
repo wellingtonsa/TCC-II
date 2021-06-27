@@ -25,9 +25,9 @@ public class HTTP implements ProtocolService{
 	}
 	
 	@Override
-	public boolean connect(String address) {
+	public boolean connect(String ip, Integer port) {
 		try {
-			url = new URL(address+"/offloading");
+			url = new URL("http://"+ip+":"+port+"/offloading");
 			con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			
