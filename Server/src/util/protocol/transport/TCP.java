@@ -1,8 +1,8 @@
 package util.protocol.transport;
 
-import model.entity.Protocol;
+import model.services.ProtocolService;
 
-public class TCP extends Protocol{
+public class TCP implements ProtocolService {
 
 	@Override
 	public boolean init() {

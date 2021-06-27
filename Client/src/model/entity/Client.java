@@ -2,11 +2,13 @@ package model.entity;
 
 import java.util.ArrayList;
 
+import model.services.ProtocolService;
+
 public class Client {
 	
-	private Protocol protocol;
+	private ProtocolService protocol;
 	private ArrayList<Message> messages;
-	public Client(Protocol protocol) {
+	public Client(ProtocolService protocol) {
 		super();
 		this.protocol = protocol;
 	}

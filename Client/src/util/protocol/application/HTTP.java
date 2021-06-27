@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
-import model.entity.Protocol;
+import model.services.ProtocolService;
 
-public class HTTP extends Protocol{
+public class HTTP implements ProtocolService{
 	private URL url;
 	private HttpURLConnection con;
 	

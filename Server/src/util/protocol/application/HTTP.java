@@ -15,10 +15,9 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import model.services.ProtocolService;
 
-import model.entity.Protocol;
-
-public class HTTP extends Protocol {
+public class HTTP implements ProtocolService {
 	private HttpServer server;
 
 	@Override

@@ -1,8 +1,7 @@
 package util.protocol.transport;
+import model.services.ProtocolService;
 
-import model.entity.Protocol;
-
-public class QUIC extends Protocol{
+public class QUIC implements ProtocolService{
 
 	@Override
 	public boolean init() {
