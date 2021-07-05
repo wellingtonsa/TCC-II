@@ -10,11 +10,11 @@ public class App {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ProtocolService cp = new TCP();
+		ProtocolService cp = new MQTT();
 		Client c = new Client(cp);
 		
 		c.connect("127.0.0.1", 8001);
-		System.out.println(c.sendMessage("Wellington"));
+		System.out.println(c.sendMessage("Teste"));
 	}
 
 }
