@@ -1,5 +1,7 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.transport;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -12,6 +14,7 @@ import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
 
 
 public class TCP implements ProtocolService {
+
 	ServerSocket ss;
 	Socket s;
 	DataInputStream din;
@@ -27,13 +30,13 @@ public class TCP implements ProtocolService {
 	public boolean connect(String ip, Integer port) {
 		try {
 			ss = new ServerSocket(port);
-			System.out.println("TCP - Server started on port " + port);
+			Log.i("TCP", "Server started on port " + port);
 			waitingForRequests();
 
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("TCP - Connection error: " + e.getMessage());
+			Log.i("TCP", "Connection error: " + e.getMessage());
 			return false;
 		}
 
@@ -47,7 +50,7 @@ public class TCP implements ProtocolService {
 			ss.close();
 			return true;
 		} catch (IOException e) {
-			System.out.println("TCP - Error to disconnect:" + e.getMessage());
+			Log.i("TCP", "Error to disconnect:" + e.getMessage());
 			return false;
 		}
 
@@ -70,10 +73,14 @@ public class TCP implements ProtocolService {
 				dout.flush(); 
 			}
 		} catch (IOException e) {
-			System.out.println("TCP - Error to proccess:" + e.getMessage());
+			Log.i("TCP", "Error to proccess:" + e.getMessage());
 			e.printStackTrace();
 		}
 
 	}
 
+	@Override
+	public String isInstanceOf() {
+		return "TCP";
+	}
 }

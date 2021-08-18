@@ -1,4 +1,6 @@
 package br.ufc.great.caos.service.protocol.client.util.protocol.transport;
+
+
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
 
 public class QUIC implements ProtocolService {
@@ -23,7 +25,7 @@ public class QUIC implements ProtocolService {
 
 	@Override
 	public String sendMessage(String message) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 

@@ -1,5 +1,10 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.application;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -12,7 +17,7 @@ public class HTTP implements ProtocolService {
 
 	@Override
 	public boolean init() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -20,10 +25,10 @@ public class HTTP implements ProtocolService {
 		try {
 			server = new HttpService(port);
 			server.start();
-			System.out.println("HTTP - Server started on port "+port);
+			Log.i("HTTP", "Server started on port " + port);
 			return true;
 		} catch (IOException e) {
-			System.out.println("HTTP - Start server error:" + e.getMessage());
+			Log.i("HTTP", "Start server error:" + e.getMessage());
 			return false;
 		}
 	}
@@ -32,10 +37,10 @@ public class HTTP implements ProtocolService {
 	public boolean disconnect() {
 		try {
 			server.start();
-			System.out.println("HTTP - Server stopped");
+			Log.i("HTTP", "Server stopped");
 			return true;
 		} catch (IOException e) {
-			System.out.println("HTTP - Finish connection error:" + e.getMessage());
+			Log.i("HTTP", "Finish connection error:" + e.getMessage());
 			return false;
 		}
 	}
@@ -54,15 +59,25 @@ public class HTTP implements ProtocolService {
 			if (Method.POST.equals(session.getMethod())) {
 				try {
 					session.parseBody(body);
-					return newFixedLengthResponse(body.get("postData"));
+
+					JSONObject JSONBody = new JSONObject(body.get("postData"));
+
+					return newFixedLengthResponse("Welcome "+JSONBody.getString("username"));
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (ResponseException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 
 			}
 			return NanoHTTPD.newFixedLengthResponse(uri);
 		}
+	}
+
+	@Override
+	public String isInstanceOf() {
+		return "HTTP";
 	}
 }

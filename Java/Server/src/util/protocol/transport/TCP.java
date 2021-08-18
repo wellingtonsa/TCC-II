@@ -10,7 +10,7 @@ import java.net.Socket;
 
 import model.services.ProtocolService;
 
-public class TCP implements ProtocolService {
+public class TCP implements ProtocolService  {
 	ServerSocket ss;
 	Socket s;
 	DataInputStream din;
