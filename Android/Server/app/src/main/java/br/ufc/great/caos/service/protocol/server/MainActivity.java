@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        ProtocolService sp = new QUIC();
+        ProtocolService sp = new TCP();
         new Server(sp).execute(Utils.getIPAddress(true), "8045");
 
     }

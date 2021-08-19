@@ -35,14 +35,9 @@ public class HTTP implements ProtocolService {
 
 	@Override
 	public boolean disconnect() {
-		try {
-			server.start();
-			Log.i("HTTP", "Server stopped");
-			return true;
-		} catch (IOException e) {
-			Log.i("HTTP", "Finish connection error:" + e.getMessage());
-			return false;
-		}
+		server.stop();
+		Log.i("HTTP", "Server stopped");
+		return true;
 	}
 
 
@@ -54,6 +49,8 @@ public class HTTP implements ProtocolService {
 		@Override
 		public Response serve(IHTTPSession session) {
 
+			Log.i("HTTP", "Received message");
+
 			String uri = session.getUri();
 			final HashMap<String, String> body = new HashMap<String, String>();
 			if (Method.POST.equals(session.getMethod())) {
@@ -64,10 +61,13 @@ public class HTTP implements ProtocolService {
 
 					return newFixedLengthResponse("Welcome "+JSONBody.getString("username"));
 				} catch (IOException e) {
+					Log.i("HTTP", "Receiving message error: "+e.getMessage());
 					e.printStackTrace();
 				} catch (ResponseException e) {
+					Log.i("HTTP", "Receiving message error: "+e.getMessage());
 					e.printStackTrace();
 				} catch (JSONException e) {
+					Log.i("HTTP", "Receiving message error: "+e.getMessage());
 					e.printStackTrace();
 				}
 

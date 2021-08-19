@@ -1,5 +1,6 @@
 package br.ufc.great.caos.service.protocol.client.util.network;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
@@ -10,8 +11,8 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
-public class DiscoveryServer {
-    public static String discovery() {
+public class DiscoveryServer extends AsyncTask<Void, Void, String>{
+    private  String discovery() {
         try {
             DatagramSocket c = new DatagramSocket();
             c.setBroadcast(true);
@@ -67,5 +68,10 @@ public class DiscoveryServer {
         }
 
         return null;
+    }
+
+    @Override
+    protected String doInBackground(Void... voids) {
+        return discovery();
     }
 }

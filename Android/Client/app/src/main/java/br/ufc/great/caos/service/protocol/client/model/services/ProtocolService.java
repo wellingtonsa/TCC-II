@@ -5,4 +5,5 @@ public interface ProtocolService {
 	public boolean connect(String ip, Integer port);
 	public boolean disconnect();
 	public String sendMessage(String message);
+	public String isInstanceOf();
 }

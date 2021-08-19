@@ -19,10 +19,10 @@ public class Server extends AsyncTask<String, Void, Void> {
 	
 	public void connect(String ip, Integer port) {
 		if(protocol.init()) {
-			if(protocol.connect(ip, port)){
-				DiscoveryThread dt = new DiscoveryThread();
-				dt.run();
-			}
+			protocol.connect(ip, port);
+			DiscoveryThread dt = new DiscoveryThread();
+			dt.run();
+
 		} 
 		
 	}

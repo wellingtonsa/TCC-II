@@ -1,13 +1,14 @@
 package br.ufc.great.caos.service.protocol.client.util.protocol.application;
 
 
+import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
 
@@ -27,10 +28,14 @@ public class HTTP implements ProtocolService {
 			url = new URL("http://"+ip+":"+port+"/offloading");
 			con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
-
+			Log.i("HTTP", "Connected to the server ("+ip+") at port: "+port);
 			return true;
 		} catch (IOException e) {
-			System.out.println("HTTP - Connection error:"+e.getMessage());
+			Log.i("HTTP", "Connection error:"+e.getMessage());
+			return false;
+		}
+		catch (Exception e) {
+			Log.i("HTTP", "Connection error:"+e.getMessage());
 			return false;
 		}
 
@@ -45,11 +50,10 @@ public class HTTP implements ProtocolService {
 	@Override
 	public String sendMessage(String message) {
 		try {
+
 			con.setDoOutput(true);
-
-			byte[] out = message.getBytes("UTF-8");
+			byte[] out = String.valueOf("{\"username\": "+message+"}").getBytes("UTF-8");
 			int length = out.length;
-
 			con.setFixedLengthStreamingMode(length);
 			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.connect();
@@ -66,14 +70,18 @@ public class HTTP implements ProtocolService {
 			}
 
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			Log.i("HTTP", "Sending messsage error:"+e.getMessage());
 			return "";
 
 		} catch (IOException ioe) {
-			// TODO Auto-generated catch block
-			ioe.printStackTrace();
+			Log.i("HTTP", "Sending messsage error:"+ioe.getMessage());
 			return "";
 		}
 
+	}
+
+	@Override
+	public String isInstanceOf() {
+		return "HTTP";
 	}
 }

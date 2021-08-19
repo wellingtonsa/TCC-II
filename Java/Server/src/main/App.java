@@ -13,7 +13,7 @@ public class App {
 		ProtocolService sp = new TCP();
 		Server s = new Server(sp);
 		
-		s.connect("127.0.0.1", 8001);
+		s.connect("192.168.1.7", 8045);
 	}
 
 }

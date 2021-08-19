@@ -1,5 +1,6 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.transport;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -30,9 +31,8 @@ public class TCP implements ProtocolService {
 	public boolean connect(String ip, Integer port) {
 		try {
 			ss = new ServerSocket(port);
+			new RequestHandler().execute();
 			Log.i("TCP", "Server started on port " + port);
-			waitingForRequests();
-
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -56,27 +56,32 @@ public class TCP implements ProtocolService {
 
 	}
 
-	private void waitingForRequests() {
-		String request = "";
+	private class RequestHandler extends AsyncTask<Void, Void, Void> {
 
-		try {
+		@Override
+		protected Void doInBackground(Void... voids) {
+			String request = "";
 
-			s = ss.accept();
-			din = new DataInputStream(s.getInputStream());
-			dout = new DataOutputStream(s.getOutputStream());
-			br = new BufferedReader(new InputStreamReader(System.in));
+			try {
 
-			while (true) {
+				s = ss.accept();
+				din = new DataInputStream(s.getInputStream());
+				dout = new DataOutputStream(s.getOutputStream());
+				br = new BufferedReader(new InputStreamReader(System.in));
 
-				request = din.readUTF();
-				dout.writeUTF("Welcome " + request);
-				dout.flush(); 
+				while (true) {
+					Log.i("TCP", "Received message");
+					request = din.readUTF();
+					dout.writeUTF("Welcome " + request);
+					dout.flush();
+				}
+			} catch (IOException e) {
+				Log.i("TCP", "Error to proccess:" + e.getMessage());
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			Log.i("TCP", "Error to proccess:" + e.getMessage());
-			e.printStackTrace();
-		}
 
+			return null;
+		}
 	}
 
 	@Override

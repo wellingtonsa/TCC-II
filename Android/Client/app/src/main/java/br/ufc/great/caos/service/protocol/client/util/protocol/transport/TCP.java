@@ -1,5 +1,7 @@
 package br.ufc.great.caos.service.protocol.client.util.protocol.transport;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -29,13 +31,14 @@ public class TCP implements ProtocolService {
 			s = new Socket(ip,port);
 			din=new DataInputStream(s.getInputStream());  
 			dout=new DataOutputStream(s.getOutputStream());  
-			br=new BufferedReader(new InputStreamReader(System.in));  
+			br=new BufferedReader(new InputStreamReader(System.in));
+			Log.i("TCP", "Connected to the server ("+ip+") at port: "+port);
 			return true;
 		} catch (UnknownHostException e) {
-			System.out.println("TCP - Connection error: " + e.getMessage());
+			Log.i("TCP", "Connection error: " + e.getMessage());
 			return false;
 		} catch (IOException e) {
-			System.out.println("TCP - Connection error: " + e.getMessage());
+			Log.i("TCP", "Connection error: " + e.getMessage());
 			return false;
 		}  
 
@@ -48,7 +51,7 @@ public class TCP implements ProtocolService {
 			s.close();
 			return true;
 		} catch (IOException e) {
-			System.out.println("TCP - Error to disconnect:" + e.getMessage());
+			Log.i("TCP", "Error to disconnect:" + e.getMessage());
 			return false;
 		}
 	}
@@ -57,13 +60,19 @@ public class TCP implements ProtocolService {
 	public String sendMessage(String message) {
 		try {
 			dout.writeUTF(message);
+			Log.i("TCP", "Message "+message+" sent.");
 			dout.flush();  
 			return din.readUTF();  
 		} catch (IOException e) {
-			System.out.println("TCP - Error to send a message:"+e.getMessage());
+			Log.i("TCP", "Error to send a message:"+e.getMessage());
 			return "";
 		}  
 
+	}
+
+	@Override
+	public String isInstanceOf() {
+		return "TCP";
 	}
 
 
