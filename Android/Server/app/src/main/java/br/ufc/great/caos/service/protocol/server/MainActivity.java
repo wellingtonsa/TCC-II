@@ -25,9 +25,13 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
+        System.loadLibrary("quiche_jni");
+
         super.onCreate(savedInstanceState);
 
-        ProtocolService sp = new TCP();
+        ProtocolService sp = new QUIC();
+
+
         new Server(sp).execute(Utils.getIPAddress(true), "8045");
 
     }

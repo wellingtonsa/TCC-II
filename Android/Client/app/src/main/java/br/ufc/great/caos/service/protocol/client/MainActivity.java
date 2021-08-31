@@ -13,6 +13,7 @@ import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
 import br.ufc.great.caos.service.protocol.client.util.network.DiscoveryServer;
 import br.ufc.great.caos.service.protocol.client.util.protocol.application.HTTP;
 import br.ufc.great.caos.service.protocol.client.util.protocol.application.MQTT;
+import br.ufc.great.caos.service.protocol.client.util.protocol.transport.QUIC;
 import br.ufc.great.caos.service.protocol.client.util.protocol.transport.TCP;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        ProtocolService cp = new TCP();
+        ProtocolService cp = new QUIC();
 
         String serverIP = null;
         try {

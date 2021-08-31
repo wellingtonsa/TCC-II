@@ -1,10 +1,7 @@
 package br.ufc.great.caos.service.protocol.client.util.protocol.transport;
 
-
-import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
 import io.quiche4j.Config;
@@ -33,7 +30,6 @@ public class QUIC implements ProtocolService {
 	public boolean init() {
 		h3Config = new Http3ConfigBuilder().build();
 		config = new ConfigBuilder(Quiche.PROTOCOL_VERSION)
-				.withApplicationProtos(Http3.APPLICATION_PROTOCOL)
 				.build();
 		return true;
 	}
