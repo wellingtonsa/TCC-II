@@ -25,15 +25,17 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
+        System.loadLibrary("quiche_jni");
+
         super.onCreate(savedInstanceState);
 
         ProtocolService cp = new QUIC();
 
-        String serverIP = null;
+        String serverIP = "192.168.1.7";
         try {
-            serverIP = new DiscoveryServer().execute().get();
+            //serverIP = new DiscoveryServer().execute().get();
             if(!serverIP.isEmpty()){
-                Client client = new Client(cp).execute(serverIP, "8045").get();
+                Client client = new Client(cp).execute(serverIP, "8046").get();
                 Log.i(cp.isInstanceOf(), client.sendMessage("Teste"));
             }
         } catch (ExecutionException e) {

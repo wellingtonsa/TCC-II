@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         ProtocolService sp = new QUIC();
 
-
         new Server(sp).execute(Utils.getIPAddress(true), "8045");
 
     }

@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import io.quiche4j.http3.Http3Header;
+
 public class Utils {
 
     public static String bytesToHex(byte[] bytes) {
@@ -87,5 +89,4 @@ public class Utils {
         } catch (Exception ignored) { }
         return "";
     }
-
 }
