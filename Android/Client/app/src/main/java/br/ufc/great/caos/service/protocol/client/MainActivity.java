@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 client = new Client(clientProtocolHTTP).execute(serverIP, "8047").get();
                 Log.i(clientProtocolHTTP.isInstanceOf(), client.sendMessage("Teste"));
 
+
+                
                 //client = new Client(clientProtocolMQTT).execute(serverIP, "8048").get();
                 //Log.i(clientProtocolMQTT.isInstanceOf(), client.sendMessage("Teste"));
             }
