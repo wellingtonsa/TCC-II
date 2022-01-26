@@ -17,7 +17,7 @@ import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
 public class MQTT implements ProtocolService {
 
 	private MqttClient server;
-	private final String BROKER_URL = "tcp://192.168.1.7:1884";
+	private final String BROKER_URL = "tcp://broker.emqx.io:1883";
 
 	@Override
 	public boolean init() {

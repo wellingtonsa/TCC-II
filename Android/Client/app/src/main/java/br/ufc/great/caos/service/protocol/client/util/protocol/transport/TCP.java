@@ -60,7 +60,6 @@ public class TCP implements ProtocolService {
 	public String sendMessage(String message) {
 		try {
 			dout.writeUTF(message);
-			Log.i("TCP", "Message "+message+" sent.");
 			dout.flush();  
 			return din.readUTF();  
 		} catch (IOException e) {

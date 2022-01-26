@@ -29,14 +29,30 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        ProtocolService cp = new QUIC();
+        ProtocolService clientProtocolMQTT = new MQTT();
+        ProtocolService clientProtocolTCP = new TCP();
+        ProtocolService clientProtocolHTTP = new HTTP();
+        //ProtocolService clientProtocolQUIC = new QUIC();
 
-        String serverIP = "192.168.1.7";
+        String serverIP;
         try {
-            //serverIP = new DiscoveryServer().execute().get();
+            serverIP = new DiscoveryServer().execute().get();
             if(!serverIP.isEmpty()){
-                Client client = new Client(cp).execute(serverIP, "8046").get();
-                Log.i(cp.isInstanceOf(), client.sendMessage("Teste"));
+
+                Client client = null;
+
+
+                client = new Client(clientProtocolMQTT).execute(serverIP, "8045").get();
+                Log.i(clientProtocolMQTT.isInstanceOf(), client.sendMessage("Teste"));
+
+                client = new Client(clientProtocolTCP).execute(serverIP, "8046").get();
+                Log.i(clientProtocolTCP.isInstanceOf(), client.sendMessage("Teste"));
+
+                client = new Client(clientProtocolHTTP).execute(serverIP, "8047").get();
+                Log.i(clientProtocolHTTP.isInstanceOf(), client.sendMessage("Teste"));
+
+                //client = new Client(clientProtocolMQTT).execute(serverIP, "8048").get();
+                //Log.i(clientProtocolMQTT.isInstanceOf(), client.sendMessage("Teste"));
             }
         } catch (ExecutionException e) {
             e.printStackTrace();

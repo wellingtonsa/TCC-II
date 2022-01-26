@@ -46,6 +46,8 @@ public class DiscoveryThread implements Runnable {
 
                     Log.i("Discovery",getClass().getName() + ">>>Sent packet to: "
                             + sendPacket.getAddress().getHostAddress());
+                    mSocket.close();
+                    break;
                 }
             }
         } catch (IOException ex) {

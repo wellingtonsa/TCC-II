@@ -19,7 +19,7 @@ public class MQTT implements ProtocolService {
 
 
 	private MqttClient client;
-	private final String BROKER_URL = "tcp://192.168.1.7:1884";
+	private final String BROKER_URL = "tcp://broker.emqx.io:1883";
 
 	@Override
 	public boolean init() {

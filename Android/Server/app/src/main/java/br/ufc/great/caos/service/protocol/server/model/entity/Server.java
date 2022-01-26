@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
-import br.ufc.great.caos.service.protocol.server.util.network.DiscoveryThread;
 
 
 public class Server extends AsyncTask<String, Void, Void> {
@@ -20,8 +19,6 @@ public class Server extends AsyncTask<String, Void, Void> {
 	public void connect(String ip, Integer port) {
 		if(protocol.init()) {
 			protocol.connect(ip, port);
-			DiscoveryThread dt = new DiscoveryThread();
-			dt.run();
 
 		} 
 		
