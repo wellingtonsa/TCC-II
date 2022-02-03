@@ -1,5 +1,6 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.application;
 
+import android.util.Base64;
 import android.util.Log;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -40,7 +41,6 @@ public class MQTT implements ProtocolService {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 	@Override

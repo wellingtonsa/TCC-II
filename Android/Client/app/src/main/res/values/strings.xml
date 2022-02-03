@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Client</string>
+    <string-array name="protocols">
+        <item>HTTP</item>
+        <item>MQTT</item>
+        <item>TCP</item>
+    </string-array>
 </resources>

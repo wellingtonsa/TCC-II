@@ -20,6 +20,10 @@ public class Client extends AsyncTask<String, Void, Client> {
 			protocol.connect(ip, port);
 		}
 	}
+
+	public boolean disconnect() {
+		return protocol.disconnect();
+	}
 	
 	
 	public String sendMessage(String message) {

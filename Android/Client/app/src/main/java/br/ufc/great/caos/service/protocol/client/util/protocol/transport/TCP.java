@@ -18,6 +18,9 @@ public class TCP implements ProtocolService {
 	DataInputStream din;
 	DataOutputStream dout;
 	BufferedReader br;
+	long start = System.currentTimeMillis();
+	long elapsed = 0;
+
 
 	@Override
 	public boolean init() {
@@ -48,7 +51,9 @@ public class TCP implements ProtocolService {
 	public boolean disconnect() {
 		try {
 			din.close();
+			dout.close();
 			s.close();
+			br.close();
 			return true;
 		} catch (IOException e) {
 			Log.i("TCP", "Error to disconnect:" + e.getMessage());
@@ -58,10 +63,15 @@ public class TCP implements ProtocolService {
 
 	@Override
 	public String sendMessage(String message) {
+		start = System.currentTimeMillis();
 		try {
 			dout.writeUTF(message);
-			dout.flush();  
-			return din.readUTF();  
+			dout.flush();
+			din.readUTF();
+
+			elapsed = System.currentTimeMillis() - start;
+			Log.i(isInstanceOf(), String.valueOf(elapsed));
+			return "";
 		} catch (IOException e) {
 			Log.i("TCP", "Error to send a message:"+e.getMessage());
 			return "";

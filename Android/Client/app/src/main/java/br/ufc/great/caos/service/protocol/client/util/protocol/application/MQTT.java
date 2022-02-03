@@ -20,6 +20,9 @@ public class MQTT implements ProtocolService {
 
 	private MqttClient client;
 	private final String BROKER_URL = "tcp://broker.emqx.io:1883";
+	long start = System.currentTimeMillis();
+	long elapsed = 0;
+
 
 	@Override
 	public boolean init() {
@@ -58,7 +61,7 @@ public class MQTT implements ProtocolService {
 
 	@Override
 	public String sendMessage(String message) {
-
+		start = System.currentTimeMillis();
 		try {
 			client.publish("/offloading/init", new MqttMessage(message.getBytes()));
 			return "";
@@ -93,7 +96,8 @@ public class MQTT implements ProtocolService {
 
 		@Override
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
-			Log.i("MQTT", message.toString());
+			elapsed = System.currentTimeMillis() - start;
+			Log.i(isInstanceOf(), String.valueOf(elapsed));
 		}
 
 	}

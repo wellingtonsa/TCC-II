@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         String IP = Utils.getIPAddress(true);
 
-        DiscoveryThread dt = new DiscoveryThread();
-        dt.run();
+        //DiscoveryThread dt = new DiscoveryThread();
+        //dt.run();
 
         new Server(serviceProtocolMQTT).execute(IP, "8045");
         new Server(serviceProtocolTCP).execute(IP, "8046");

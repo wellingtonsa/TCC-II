@@ -16,6 +16,8 @@ public class HTTP implements ProtocolService {
 
 	private URL url;
 	private HttpURLConnection con;
+	long start = System.currentTimeMillis();
+	long elapsed = 0;
 
 	@Override
 	public boolean init() {
@@ -26,8 +28,7 @@ public class HTTP implements ProtocolService {
 	public boolean connect(String ip, Integer port) {
 		try {
 			url = new URL("http://"+ip+":"+port+"/offloading");
-			con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("POST");
+
 			Log.i("HTTP", "Connected to the server ("+ip+") at port: "+port);
 			return true;
 		} catch (IOException e) {
@@ -43,20 +44,24 @@ public class HTTP implements ProtocolService {
 
 	@Override
 	public boolean disconnect() {
-		return false;
+		con.disconnect();
+		return true;
 
 	}
 
 	@Override
 	public String sendMessage(String message) {
+		start = System.currentTimeMillis();
 		try {
-
+			con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			byte[] out = String.valueOf("{\"username\": "+message+"}").getBytes("UTF-8");
 			int length = out.length;
 			con.setFixedLengthStreamingMode(length);
-			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			con.connect();
+
 			try(OutputStream os = con.getOutputStream()) {
 				os.write(out);
 
@@ -65,7 +70,8 @@ public class HTTP implements ProtocolService {
 				for (int l; (l = con.getInputStream().read(buffer)) != -1; ) {
 					result.write(buffer, 0, l);
 				}
-
+				elapsed = System.currentTimeMillis() - start;
+				Log.i(isInstanceOf(), String.valueOf(elapsed));
 				return result.toString("UTF-8");
 			}
 
