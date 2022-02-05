@@ -1,5 +1,8 @@
 package br.ufc.great.caos.service.protocol.server.util;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -89,4 +92,32 @@ public class Utils {
         } catch (Exception ignored) { }
         return "";
     }
+    public static Bitmap convertImage(Bitmap original){
+        Bitmap converted = Bitmap.createBitmap(original.getWidth(), original.getHeight(), original.getConfig());
+
+        int A, R, G, B;
+        int colorPixel;
+        int width = original.getWidth();
+        int height = original.getHeight();
+
+        for(int x = 0; x < width; x++){
+            for(int y = 0; y < height; y++){
+                colorPixel = original.getPixel(x, y);
+                A = Color.alpha(colorPixel);
+                R = Color.red(colorPixel);
+                G = Color.green(colorPixel);
+                B = Color.blue(colorPixel);
+
+                R = (R + G + B)  / 3;
+                G = R;
+                B = R;
+
+                converted.setPixel(x, y, Color.argb(A,R,G,B));
+            }
+        }
+
+
+        return converted;
+    }
+
 }

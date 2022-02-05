@@ -1,5 +1,7 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.application;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
@@ -10,15 +12,17 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
+import br.ufc.great.caos.service.protocol.server.util.Utils;
 
 
 public class MQTT implements ProtocolService {
 
 	private MqttClient server;
-	private final String BROKER_URL = "tcp://broker.emqx.io:1883";
+	private final String BROKER_URL = "tcp://192.168.0.55:1884";
 
 	@Override
 	public boolean init() {
@@ -77,9 +81,19 @@ public class MQTT implements ProtocolService {
 
 		@Override
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
-			String parsedMessage = "Welcome " + message.toString();
 
-			server.publish("/offloading/result", new MqttMessage(parsedMessage.getBytes()));
+			String encodedImage = message.toString();
+
+			byte[] decodedImageByteArray = Base64.decode(encodedImage, Base64.DEFAULT);
+			Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedImageByteArray, 0, decodedImageByteArray.length);
+			Bitmap imagedWithBWFilter = Utils.convertImage(decodedImage);
+
+			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+			imagedWithBWFilter.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
+			byte[] byteArray = byteStream.toByteArray();
+			encodedImage = Base64.encodeToString(byteArray,Base64.DEFAULT);
+
+			server.publish("/offloading/result", new MqttMessage(encodedImage.getBytes()));
 
 		}
 

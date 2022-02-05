@@ -1,6 +1,9 @@
 package br.ufc.great.caos.service.protocol.client.util.protocol.transport;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -9,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
 
@@ -50,10 +54,12 @@ public class TCP implements ProtocolService {
 	@Override
 	public boolean disconnect() {
 		try {
-			din.close();
-			dout.close();
-			s.close();
-			br.close();
+			if(din != null && dout != null && s != null && br != null) {
+				din.close();
+				dout.close();
+				s.close();
+				br.close();
+			}
 			return true;
 		} catch (IOException e) {
 			Log.i("TCP", "Error to disconnect:" + e.getMessage());
@@ -65,13 +71,14 @@ public class TCP implements ProtocolService {
 	public String sendMessage(String message) {
 		start = System.currentTimeMillis();
 		try {
+
 			dout.writeUTF(message);
+
 			dout.flush();
-			din.readUTF();
 
 			elapsed = System.currentTimeMillis() - start;
 			Log.i(isInstanceOf(), String.valueOf(elapsed));
-			return "";
+			return din.readUTF();
 		} catch (IOException e) {
 			Log.i("TCP", "Error to send a message:"+e.getMessage());
 			return "";

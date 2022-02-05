@@ -44,7 +44,7 @@ public class HTTP implements ProtocolService {
 
 	@Override
 	public boolean disconnect() {
-		con.disconnect();
+		if(con != null) con.disconnect();
 		return true;
 
 	}
@@ -57,7 +57,7 @@ public class HTTP implements ProtocolService {
 			con.setDoOutput(true);
 			con.setRequestMethod("POST");
 			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			byte[] out = String.valueOf("{\"username\": "+message+"}").getBytes("UTF-8");
+			byte[] out = String.valueOf("{\"data\": \""+message+"\"}").getBytes();
 			int length = out.length;
 			con.setFixedLengthStreamingMode(length);
 			con.connect();

@@ -1,14 +1,19 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.application;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
+import br.ufc.great.caos.service.protocol.server.util.Utils;
 import fi.iki.elonen.NanoHTTPD;
 
 public class HTTP implements ProtocolService {
@@ -59,7 +64,19 @@ public class HTTP implements ProtocolService {
 
 					JSONObject JSONBody = new JSONObject(body.get("postData"));
 
-					return newFixedLengthResponse("Welcome "+JSONBody.getString("username"));
+					String encodedImage = JSONBody.getString("data");
+
+					byte[] decodedImageByteArray = Base64.decode(encodedImage, Base64.DEFAULT);
+					Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedImageByteArray, 0, decodedImageByteArray.length);
+					Bitmap imagedWithBWFilter = Utils.convertImage(decodedImage);
+
+					ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+					imagedWithBWFilter.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
+					byte[] byteArray = byteStream.toByteArray();
+					 encodedImage = Base64.encodeToString(byteArray,Base64.DEFAULT);
+
+
+					return newFixedLengthResponse(encodedImage);
 				} catch (IOException e) {
 					Log.i("HTTP", "Receiving message error: "+e.getMessage());
 					e.printStackTrace();
@@ -80,4 +97,6 @@ public class HTTP implements ProtocolService {
 	public String isInstanceOf() {
 		return "HTTP";
 	}
+
+
 }

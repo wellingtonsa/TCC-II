@@ -19,9 +19,11 @@ public class MQTT implements ProtocolService {
 
 
 	private MqttClient client;
-	private final String BROKER_URL = "tcp://broker.emqx.io:1883";
+	private final String BROKER_URL = "tcp://192.168.0.55:1885";
 	long start = System.currentTimeMillis();
 	long elapsed = 0;
+
+	String response = "";
 
 
 	@Override
@@ -50,7 +52,7 @@ public class MQTT implements ProtocolService {
 	@Override
 	public boolean disconnect() {
 		try {
-			client.disconnect();
+			if(client != null) client.disconnect();
 			return true;
 		} catch (MqttException e) {
 			Log.i("MQTT", "Error to disconnect:"+e.getMessage());
@@ -64,7 +66,11 @@ public class MQTT implements ProtocolService {
 		start = System.currentTimeMillis();
 		try {
 			client.publish("/offloading/init", new MqttMessage(message.getBytes()));
-			return "";
+
+			while(response.isEmpty()){
+
+			}
+			return response;
 		} catch (MqttPersistenceException e) {
 			Log.i("MQTT", "Error to send a message:"+e.getMessage());
 			return "";
@@ -97,6 +103,7 @@ public class MQTT implements ProtocolService {
 		@Override
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
 			elapsed = System.currentTimeMillis() - start;
+			response = message.toString();
 			Log.i(isInstanceOf(), String.valueOf(elapsed));
 		}
 

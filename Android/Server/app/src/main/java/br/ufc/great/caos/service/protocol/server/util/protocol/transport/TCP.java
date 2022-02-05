@@ -1,9 +1,13 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.transport;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,6 +16,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
+import br.ufc.great.caos.service.protocol.server.util.Utils;
 
 
 public class TCP implements ProtocolService {
@@ -56,10 +61,10 @@ public class TCP implements ProtocolService {
 
 	}
 
-	private class RequestHandler extends AsyncTask<Void, Void, Void> {
+	private class RequestHandler extends AsyncTask<Void, Void, String> {
 
 		@Override
-		protected Void doInBackground(Void... voids) {
+		protected String doInBackground(Void... voids) {
 			String request = "";
 
 			try {
@@ -70,17 +75,31 @@ public class TCP implements ProtocolService {
 				br = new BufferedReader(new InputStreamReader(System.in));
 
 				while (true) {
-					Log.i("TCP", "Received message");
 					request = din.readUTF();
-					dout.writeUTF("Welcome " + request);
-					dout.flush();
+					if(!request.isEmpty()) {
+						String encodedImage = request;
+
+						byte[] decodedImageByteArray = Base64.decode(encodedImage, Base64.DEFAULT);
+						Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedImageByteArray, 0, decodedImageByteArray.length);
+						Bitmap imagedWithBWFilter = Utils.convertImage(decodedImage);
+
+						ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+						imagedWithBWFilter.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
+						byte[] byteArray = byteStream.toByteArray();
+						encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+						dout.writeUTF(encodedImage);
+						dout.flush();
+						return encodedImage;
+					}
 				}
 			} catch (IOException e) {
 				Log.i("TCP", "Error to proccess:" + e.getMessage());
 				e.printStackTrace();
+				return "";
 			}
 
-			return null;
+
 		}
 	}
 
