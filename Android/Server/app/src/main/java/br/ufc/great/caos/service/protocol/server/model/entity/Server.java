@@ -1,6 +1,7 @@
 package br.ufc.great.caos.service.protocol.server.model.entity;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.ArrayList;
 

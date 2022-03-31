@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ProtocolService serviceProtocolMQTT = new MQTT();
-        ProtocolService serviceProtocolTCP = new TCP();
+        //ProtocolService serviceProtocolTCP = new TCP();
         ProtocolService serviceProtocolHTTP = new HTTP();
         //ProtocolService serviceProtocolQUIC = new QUIC();
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         //dt.run();
 
         new Server(serviceProtocolMQTT).execute(IP, "8045");
-        new Server(serviceProtocolTCP).execute(IP, "8046");
+        //new Server(serviceProtocolTCP).execute(IP, "8046");
         new Server(serviceProtocolHTTP).execute(IP, "8047");
         //new Server(serviceProtocolQUIC).execute(IP, "8048");
 

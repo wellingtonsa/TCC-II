@@ -63,6 +63,8 @@ public class HTTP implements ProtocolService {
 					session.parseBody(body);
 
 					JSONObject JSONBody = new JSONObject(body.get("postData"));
+					long start = System.currentTimeMillis();
+					long elapsed = 0;
 
 					String encodedImage = JSONBody.getString("data");
 
@@ -74,6 +76,9 @@ public class HTTP implements ProtocolService {
 					imagedWithBWFilter.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
 					byte[] byteArray = byteStream.toByteArray();
 					 encodedImage = Base64.encodeToString(byteArray,Base64.DEFAULT);
+
+					elapsed = System.currentTimeMillis() - start;
+					Log.i(isInstanceOf(), String.valueOf(elapsed));
 
 
 					return newFixedLengthResponse(encodedImage);

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView Image = (ImageView) findViewById(R.id.image);
 
         Image.setBackgroundColor(Color.WHITE);
-        Image.setImageResource(R.drawable.paradise_extralarge);
+        Image.setImageResource(R.drawable.paradise_8mb);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.protocols, android.R.layout.simple_spinner_item);
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        String serverIP = "192.168.0.53";
+        String serverIP = "192.168.1.5";
         //serverIP = new DiscoveryServer().execute().get();
             if(!serverIP.isEmpty()){
 
@@ -78,19 +78,19 @@ public class MainActivity extends AppCompatActivity {
                                 clientProtocol = new MQTT();
                                 if(client != null) client.disconnect();
                                 client = new Client(clientProtocol).execute(serverIP, "8045").get();
-                                Image.setImageResource(R.drawable.paradise_extralarge);
+                                Image.setImageResource(R.drawable.paradise_8mb);
                                 break;
                             case "TCP":
                                 clientProtocol = new TCP();
                                 if(client != null) client.disconnect();
                                 client = new Client(clientProtocol).execute(serverIP, "8046").get();
-                                Image.setImageResource(R.drawable.paradise_extralarge);
+                                Image.setImageResource(R.drawable.paradise_8mb);
                                 break;
                             case "HTTP":
                                 clientProtocol = new HTTP();
                                 if(client != null) client.disconnect();
                                 client = new Client(clientProtocol).execute(serverIP, "8047").get();
-                                Image.setImageResource(R.drawable.paradise_extralarge);
+                                Image.setImageResource(R.drawable.paradise_8mb);
                                 break;
                             default:
                                 break;
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 btnSend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.paradise_extralarge);
+                        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.paradise_8mb);
                         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
                         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -130,32 +130,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-    }
-    public Bitmap convertImage(Bitmap original){
-        Bitmap converted = Bitmap.createBitmap(original.getWidth(), original.getHeight(), original.getConfig());
-
-        int A, R, G, B;
-        int colorPixel;
-        int width = original.getWidth();
-        int height = original.getHeight();
-
-        for(int x = 0; x < width; x++){
-            for(int y = 0; y < height; y++){
-                colorPixel = original.getPixel(x, y);
-                A = Color.alpha(colorPixel);
-                R = Color.red(colorPixel);
-                G = Color.green(colorPixel);
-                B = Color.blue(colorPixel);
-
-                R = (R + G + B)  / 3;
-                G = R;
-                B = R;
-
-                converted.setPixel(x, y, Color.argb(A,R,G,B));
-            }
-        }
-
-
-        return converted;
     }
 }

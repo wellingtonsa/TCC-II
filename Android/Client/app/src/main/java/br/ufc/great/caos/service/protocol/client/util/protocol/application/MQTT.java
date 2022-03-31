@@ -19,7 +19,7 @@ public class MQTT implements ProtocolService {
 
 
 	private MqttClient client;
-	private final String BROKER_URL = "tcp://192.168.0.55:1885";
+	private final String BROKER_URL = "tcp://192.168.1.12:1884";
 	long start = System.currentTimeMillis();
 	long elapsed = 0;
 

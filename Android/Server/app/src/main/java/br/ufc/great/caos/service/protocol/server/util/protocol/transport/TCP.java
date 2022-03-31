@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
 import br.ufc.great.caos.service.protocol.server.util.Utils;
@@ -36,6 +39,10 @@ public class TCP implements ProtocolService {
 	public boolean connect(String ip, Integer port) {
 		try {
 			ss = new ServerSocket(port);
+			s = ss.accept();
+			din = new DataInputStream(s.getInputStream());
+			dout = new DataOutputStream(s.getOutputStream());
+			br = new BufferedReader(new InputStreamReader(System.in));
 			new RequestHandler().execute();
 			Log.i("TCP", "Server started on port " + port);
 			return true;
@@ -69,13 +76,10 @@ public class TCP implements ProtocolService {
 
 			try {
 
-				s = ss.accept();
-				din = new DataInputStream(s.getInputStream());
-				dout = new DataOutputStream(s.getOutputStream());
-				br = new BufferedReader(new InputStreamReader(System.in));
-
 				while (true) {
+
 					request = din.readUTF();
+
 					if(!request.isEmpty()) {
 						String encodedImage = request;
 
@@ -90,6 +94,7 @@ public class TCP implements ProtocolService {
 
 						dout.writeUTF(encodedImage);
 						dout.flush();
+
 						return encodedImage;
 					}
 				}

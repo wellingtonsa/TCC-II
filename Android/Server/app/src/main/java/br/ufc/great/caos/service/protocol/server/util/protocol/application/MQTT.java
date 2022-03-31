@@ -22,7 +22,8 @@ import br.ufc.great.caos.service.protocol.server.util.Utils;
 public class MQTT implements ProtocolService {
 
 	private MqttClient server;
-	private final String BROKER_URL = "tcp://192.168.0.55:1884";
+	private final String BROKER_URL = "tcp://192.168.1.12:1884";
+
 
 	@Override
 	public boolean init() {
@@ -81,6 +82,9 @@ public class MQTT implements ProtocolService {
 
 		@Override
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
+			Log.i("MQTT", "Received message");
+			long start = System.currentTimeMillis();
+			long elapsed = 0;
 
 			String encodedImage = message.toString();
 
@@ -92,6 +96,9 @@ public class MQTT implements ProtocolService {
 			imagedWithBWFilter.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
 			byte[] byteArray = byteStream.toByteArray();
 			encodedImage = Base64.encodeToString(byteArray,Base64.DEFAULT);
+
+			elapsed = System.currentTimeMillis() - start;
+			Log.i(isInstanceOf(), String.valueOf(elapsed));
 
 			server.publish("/offloading/result", new MqttMessage(encodedImage.getBytes()));
 

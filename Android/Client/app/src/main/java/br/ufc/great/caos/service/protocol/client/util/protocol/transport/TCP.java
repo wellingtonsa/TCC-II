@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
 
 
 public class TCP implements ProtocolService {
+
+
 	Socket s;
 	DataInputStream din;
 	DataOutputStream dout;
@@ -36,8 +39,8 @@ public class TCP implements ProtocolService {
 		Socket s;
 		try {
 			s = new Socket(ip,port);
-			din=new DataInputStream(s.getInputStream());  
-			dout=new DataOutputStream(s.getOutputStream());  
+			din=new DataInputStream(s.getInputStream());
+			dout= new DataOutputStream(s.getOutputStream());
 			br=new BufferedReader(new InputStreamReader(System.in));
 			Log.i("TCP", "Connected to the server ("+ip+") at port: "+port);
 			return true;
@@ -67,18 +70,26 @@ public class TCP implements ProtocolService {
 		}
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 	@Override
 	public String sendMessage(String message) {
 		start = System.currentTimeMillis();
+
+		String response = "";
 		try {
+			if(!message.isEmpty()) {
 
-			dout.writeUTF(message);
+				dout.writeUTF("teste");
 
-			dout.flush();
+				dout.flush();
 
-			elapsed = System.currentTimeMillis() - start;
-			Log.i(isInstanceOf(), String.valueOf(elapsed));
-			return din.readUTF();
+				response = din.readUTF();
+
+				elapsed = System.currentTimeMillis() - start;
+				Log.i(isInstanceOf(), String.valueOf(elapsed));
+
+			}
+			return response;
 		} catch (IOException e) {
 			Log.i("TCP", "Error to send a message:"+e.getMessage());
 			return "";
