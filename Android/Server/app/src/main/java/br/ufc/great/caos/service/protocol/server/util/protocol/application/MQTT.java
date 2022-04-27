@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -16,14 +18,17 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
+import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
+import br.ufc.great.caos.service.protocol.core.offload.RemoteMethodExecutionService;
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
 import br.ufc.great.caos.service.protocol.server.util.Utils;
 
 
 public class MQTT implements ProtocolService {
 
+	private Context context;
 	private MqttClient server;
-	private final String BROKER_URL = "tcp://192.168.1.12:1884";
+	private final String BROKER_URL = "tcp://192.168.1.10:1883";
 
 
 	@Override
@@ -34,6 +39,7 @@ public class MQTT implements ProtocolService {
 	@Override
 	public boolean connect(String ip, Integer port, Context context) {
 		try {
+			this.context = context;
 			Callback cb = new Callback();
 			MemoryPersistence persistence = new MemoryPersistence();
 			server = new MqttClient(BROKER_URL, UUID.randomUUID().toString(), persistence);
@@ -87,21 +93,16 @@ public class MQTT implements ProtocolService {
 			long start = System.currentTimeMillis();
 			long elapsed = 0;
 
-			String encodedImage = message.toString();
 
-			byte[] decodedImageByteArray = Base64.decode(encodedImage, Base64.DEFAULT);
-			Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedImageByteArray, 0, decodedImageByteArray.length);
-			Bitmap imagedWithBWFilter = Utils.convertImage(decodedImage);
+			InvocableMethod request = new Gson().fromJson(message.toString(), InvocableMethod.class);
 
-			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-			imagedWithBWFilter.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
-			byte[] byteArray = byteStream.toByteArray();
-			encodedImage = Base64.encodeToString(byteArray,Base64.DEFAULT);
 
-			elapsed = System.currentTimeMillis() - start;
+			RemoteMethodExecutionService remoteMethodExecution = new RemoteMethodExecutionService(context);
+			Object response = remoteMethodExecution.executeMethod(request);
+
 			Log.i(isInstanceOf(), String.valueOf(elapsed));
 
-			server.publish("/offloading/result", new MqttMessage(encodedImage.getBytes()));
+			server.publish("/offloading/result", new MqttMessage(new Gson().toJson(response).getBytes()));
 
 		}
 

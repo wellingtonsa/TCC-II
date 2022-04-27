@@ -12,6 +12,8 @@ import android.util.Log;
 import br.ufc.great.caos.service.protocol.server.model.entity.Server;
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
 import br.ufc.great.caos.service.protocol.server.util.Utils;
+import br.ufc.great.caos.service.protocol.server.util.protocol.application.HTTP;
+import br.ufc.great.caos.service.protocol.server.util.protocol.application.MQTT;
 import br.ufc.great.caos.service.protocol.server.util.protocol.transport.TCP;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,19 +37,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        //ProtocolService serviceProtocolMQTT = new MQTT();
+        ProtocolService serviceProtocolMQTT = new MQTT();
         ProtocolService serviceProtocolTCP = new TCP();
-        //ProtocolService serviceProtocolHTTP = new HTTP();
+        ProtocolService serviceProtocolHTTP = new HTTP();
         //ProtocolService serviceProtocolQUIC = new QUIC();
 
         String IP = Utils.getIPAddress(true);
-        Log.i("TCP", IP);
+        Log.i("IP", IP);
         //DiscoveryThread dt = new DiscoveryThread();
         //dt.run();
 
-        //new Server(serviceProtocolMQTT, getApplicationContext()).execute(IP, "8045" );
+        new Server(serviceProtocolMQTT, getApplicationContext()).execute(IP, "8045" );
         new Server(serviceProtocolTCP, getApplicationContext()).execute(IP, "8046");
-        //new Server(serviceProtocolHTTP, getApplicationContext()).execute(IP, "8047");
+        new Server(serviceProtocolHTTP, getApplicationContext()).execute(IP, "8047");
         //new Server(serviceProtocolQUIC, getApplicationContext()).execute(IP, "8048");
 
     }

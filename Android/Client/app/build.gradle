@@ -53,5 +53,6 @@ dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
     implementation "app.artyomd.injector:injector-android:0.5.0"
+    implementation 'com.google.code.gson:gson:2.9.0'
 
 }

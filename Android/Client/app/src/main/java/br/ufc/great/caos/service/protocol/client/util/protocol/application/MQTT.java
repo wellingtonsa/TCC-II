@@ -3,6 +3,8 @@ package br.ufc.great.caos.service.protocol.client.util.protocol.application;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
 import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
 
@@ -11,6 +13,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.UUID;
@@ -19,11 +22,11 @@ public class MQTT implements ProtocolService {
 
 
 	private MqttClient client;
-	private final String BROKER_URL = "tcp://192.168.1.12:1884";
+	private final String BROKER_URL = "tcp://192.168.1.10:1883";
 	long start = System.currentTimeMillis();
 	long elapsed = 0;
 
-	String response = "";
+	Object response = null;
 
 
 	@Override
@@ -63,13 +66,15 @@ public class MQTT implements ProtocolService {
 
 	@Override
 	public Object executeOffload(InvocableMethod method) {
-		/*start = System.currentTimeMillis();
+		start = System.currentTimeMillis();
 		try {
-			client.publish("/offloading/init", new MqttMessage(message.getBytes()));
+			Gson gson = new Gson();
+			byte[] out = gson.toJson(method).getBytes();
 
-			while(response.isEmpty()){
+			client.publish("/offloading/init", new MqttMessage(out));
 
-			}
+			while(response == null){}
+
 			return response;
 		} catch (MqttPersistenceException e) {
 			Log.i("MQTT", "Error to send a message:"+e.getMessage());
@@ -78,8 +83,6 @@ public class MQTT implements ProtocolService {
 			Log.i("MQTT", "Error to send a message:"+e.getMessage());
 			return "";
 		}
-		*/
-		return null;
 	}
 
 	@Override
@@ -105,7 +108,7 @@ public class MQTT implements ProtocolService {
 		@Override
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
 			elapsed = System.currentTimeMillis() - start;
-			response = message.toString();
+			response = new Gson().fromJson(message.toString(), Object.class);
 			Log.i(isInstanceOf(), String.valueOf(elapsed));
 		}
 

@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
+import br.ufc.great.caos.service.protocol.core.offload.RemoteMethodExecutionService;
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
 import br.ufc.great.caos.service.protocol.server.util.Utils;
 import fi.iki.elonen.NanoHTTPD;
@@ -20,6 +25,7 @@ import fi.iki.elonen.NanoHTTPD;
 public class HTTP implements ProtocolService {
 
 	HttpService server;
+	Context context;
 
 	@Override
 	public boolean init() {
@@ -29,6 +35,7 @@ public class HTTP implements ProtocolService {
 	@Override
 	public boolean connect(String ip, Integer port, Context context) {
 		try {
+			this.context = context;
 			server = new HttpService(port);
 			server.start();
 			Log.i("HTTP", "Server started on port " + port);
@@ -67,22 +74,13 @@ public class HTTP implements ProtocolService {
 					long start = System.currentTimeMillis();
 					long elapsed = 0;
 
-					String encodedImage = JSONBody.getString("data");
-
-					byte[] decodedImageByteArray = Base64.decode(encodedImage, Base64.DEFAULT);
-					Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedImageByteArray, 0, decodedImageByteArray.length);
-					Bitmap imagedWithBWFilter = Utils.convertImage(decodedImage);
-
-					ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-					imagedWithBWFilter.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
-					byte[] byteArray = byteStream.toByteArray();
-					 encodedImage = Base64.encodeToString(byteArray,Base64.DEFAULT);
-
-					elapsed = System.currentTimeMillis() - start;
-					Log.i(isInstanceOf(), String.valueOf(elapsed));
+					InvocableMethod request = new Gson().fromJson(JSONBody.toString(), InvocableMethod.class);
 
 
-					return newFixedLengthResponse(encodedImage);
+					RemoteMethodExecutionService remoteMethodExecution = new RemoteMethodExecutionService(context);
+					Object response = remoteMethodExecution.executeMethod(request);
+
+					return newFixedLengthResponse(new Gson().toJson(response));
 				} catch (IOException e) {
 					Log.i("HTTP", "Receiving message error: "+e.getMessage());
 					e.printStackTrace();

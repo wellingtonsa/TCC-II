@@ -3,7 +3,12 @@ package br.ufc.great.caos.service.protocol.client.util.protocol.application;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -49,13 +54,14 @@ public class HTTP implements ProtocolService {
 
 	@Override
 	public Object executeOffload(InvocableMethod method) {
-		/*start = System.currentTimeMillis();
+		start = System.currentTimeMillis();
 		try {
 			con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
 			con.setRequestMethod("POST");
 			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			byte[] out = String.valueOf("{\"data\": \""+message+"\"}").getBytes();
+			Gson gson = new Gson();
+			byte[] out = gson.toJson(method).getBytes();
 			int length = out.length;
 			con.setFixedLengthStreamingMode(length);
 			con.connect();
@@ -69,8 +75,11 @@ public class HTTP implements ProtocolService {
 					result.write(buffer, 0, l);
 				}
 				elapsed = System.currentTimeMillis() - start;
+
+				Object response = new Gson().fromJson(result.toString("UTF-8"), Object.class);
 				Log.i(isInstanceOf(), String.valueOf(elapsed));
-				return result.toString("UTF-8");
+
+				return response;
 			}
 
 		} catch (UnsupportedEncodingException e) {
@@ -81,8 +90,6 @@ public class HTTP implements ProtocolService {
 			Log.i("HTTP", "Sending messsage error:"+ioe.getMessage());
 			return "";
 		}
-	*/
-		return null;
 	}
 
 	@Override
