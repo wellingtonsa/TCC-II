@@ -1,4 +1,5 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.transport;
+import android.content.Context;
 import android.util.Log;
 
 import java.io.IOException;
@@ -123,7 +124,7 @@ public class QUIC implements ProtocolService {
 	}
 
 	@Override
-	public boolean connect(String ip, Integer port) {
+	public boolean connect(String ip, Integer port, Context context) {
 
 		try {
 			socket = new DatagramSocket(port, InetAddress.getByName(ip));

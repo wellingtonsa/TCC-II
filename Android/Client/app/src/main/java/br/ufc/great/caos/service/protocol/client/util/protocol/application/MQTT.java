@@ -4,13 +4,13 @@ package br.ufc.great.caos.service.protocol.client.util.protocol.application;
 import android.util.Log;
 
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
+import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.UUID;
@@ -62,8 +62,8 @@ public class MQTT implements ProtocolService {
 	}
 
 	@Override
-	public String sendMessage(String message) {
-		start = System.currentTimeMillis();
+	public Object executeOffload(InvocableMethod method) {
+		/*start = System.currentTimeMillis();
 		try {
 			client.publish("/offloading/init", new MqttMessage(message.getBytes()));
 
@@ -78,6 +78,8 @@ public class MQTT implements ProtocolService {
 			Log.i("MQTT", "Error to send a message:"+e.getMessage());
 			return "";
 		}
+		*/
+		return null;
 	}
 
 	@Override

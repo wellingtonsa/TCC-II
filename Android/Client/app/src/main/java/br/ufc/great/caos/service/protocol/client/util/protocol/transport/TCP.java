@@ -6,24 +6,23 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
+import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
 
 
 public class TCP implements ProtocolService {
 
 
 	Socket s;
-	DataInputStream din;
-	DataOutputStream dout;
+	ObjectInputStream din;
+	ObjectOutputStream dout;
 	BufferedReader br;
 	long start = System.currentTimeMillis();
 	long elapsed = 0;
@@ -39,8 +38,8 @@ public class TCP implements ProtocolService {
 		Socket s;
 		try {
 			s = new Socket(ip,port);
-			din=new DataInputStream(s.getInputStream());
-			dout= new DataOutputStream(s.getOutputStream());
+			din=new ObjectInputStream(s.getInputStream());
+			dout= new ObjectOutputStream(s.getOutputStream());
 			br=new BufferedReader(new InputStreamReader(System.in));
 			Log.i("TCP", "Connected to the server ("+ip+") at port: "+port);
 			return true;
@@ -72,18 +71,18 @@ public class TCP implements ProtocolService {
 
 	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 	@Override
-	public String sendMessage(String message) {
+	public Object executeOffload(InvocableMethod method) {
 		start = System.currentTimeMillis();
 
-		String response = "";
+		Object response = "";
 		try {
-			if(!message.isEmpty()) {
+			if(method != null) {
 
-				dout.writeUTF("teste");
+				dout.writeObject(method);
 
 				dout.flush();
 
-				response = din.readUTF();
+				response = din.readObject();
 
 				elapsed = System.currentTimeMillis() - start;
 				Log.i(isInstanceOf(), String.valueOf(elapsed));
@@ -93,8 +92,11 @@ public class TCP implements ProtocolService {
 		} catch (IOException e) {
 			Log.i("TCP", "Error to send a message:"+e.getMessage());
 			return "";
-		}  
+		} catch (ClassNotFoundException e) {
+			Log.i("TCP", "Error to send a message:"+e.getMessage());
+		}
 
+		return response;
 	}
 
 	@Override

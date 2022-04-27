@@ -3,14 +3,12 @@ package br.ufc.great.caos.service.protocol.client.util.protocol.application;
 
 import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
+import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
 
 public class HTTP implements ProtocolService {
 
@@ -50,8 +48,8 @@ public class HTTP implements ProtocolService {
 	}
 
 	@Override
-	public String sendMessage(String message) {
-		start = System.currentTimeMillis();
+	public Object executeOffload(InvocableMethod method) {
+		/*start = System.currentTimeMillis();
 		try {
 			con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
@@ -83,7 +81,8 @@ public class HTTP implements ProtocolService {
 			Log.i("HTTP", "Sending messsage error:"+ioe.getMessage());
 			return "";
 		}
-
+	*/
+		return null;
 	}
 
 	@Override

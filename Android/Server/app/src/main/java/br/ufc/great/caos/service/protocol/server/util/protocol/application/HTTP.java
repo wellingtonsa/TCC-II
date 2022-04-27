@@ -1,5 +1,6 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.application;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -26,7 +27,7 @@ public class HTTP implements ProtocolService {
 	}
 
 	@Override
-	public boolean connect(String ip, Integer port) {
+	public boolean connect(String ip, Integer port, Context context) {
 		try {
 			server = new HttpService(port);
 			server.start();

@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'app.artyomd.injector'
 }
 
 android {
@@ -12,6 +13,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,6 +28,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -42,4 +45,5 @@ dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
     implementation'org.nanohttpd:nanohttpd:2.2.0'
+    implementation "app.artyomd.injector:injector-android:0.5.0"
 }

@@ -2,14 +2,12 @@ package br.ufc.great.caos.service.protocol.client.model.entity;
 
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
-
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
+import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
 
 public class Client extends AsyncTask<String, Void, Client> {
 	
 	private ProtocolService protocol;
-	private ArrayList<Message> messages;
 	public Client(ProtocolService protocol) {
 		super();
 		this.protocol = protocol;
@@ -26,8 +24,8 @@ public class Client extends AsyncTask<String, Void, Client> {
 	}
 	
 	
-	public String sendMessage(String message) {
-		return protocol.sendMessage(message);
+	public Object executeOffload(InvocableMethod method) {
+		return protocol.executeOffload(method);
 	}
 
 	@Override

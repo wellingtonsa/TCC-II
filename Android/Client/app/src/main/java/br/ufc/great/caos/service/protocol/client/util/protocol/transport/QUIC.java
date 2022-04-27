@@ -1,26 +1,16 @@
 package br.ufc.great.caos.service.protocol.client.util.protocol.transport;
 
-import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
 import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
+import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
 import io.quiche4j.Config;
 import io.quiche4j.ConfigBuilder;
 import io.quiche4j.Connection;
@@ -29,11 +19,6 @@ import io.quiche4j.Quiche;
 import io.quiche4j.QuicheSocketAddress;
 import io.quiche4j.Utils;
 import io.quiche4j.http3.Http3;
-import io.quiche4j.http3.Http3Config;
-import io.quiche4j.http3.Http3ConfigBuilder;
-import io.quiche4j.http3.Http3Connection;
-import io.quiche4j.http3.Http3EventListener;
-import io.quiche4j.http3.Http3Header;
 
 public class QUIC implements ProtocolService {
 
@@ -116,8 +101,8 @@ public class QUIC implements ProtocolService {
 	}
 
 	@Override
-	public String sendMessage(String message) {
-		int len = 0;
+	public Object executeOffload(InvocableMethod method) {
+		/*int len = 0;
 		final byte[] buffer = new byte[MAX_DATAGRAM_SIZE];
 		len = conn.send(buffer);
 		if (len < 0 && len != Quiche.ErrorCode.DONE) {
@@ -263,7 +248,8 @@ public class QUIC implements ProtocolService {
 		}
 
 		return "";
-
+*/
+		return null;
 	}
 
 

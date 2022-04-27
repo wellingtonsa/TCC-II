@@ -4,41 +4,28 @@
  * disclose such Confidential Information and shall use it only in accordance
  * with the terms of the license agreement you entered into with LG Electronics.
  *******************************************************************************/
-package br.ufc.great.caos.api.offload;
+package br.ufc.great.caos.service.protocol.core.offload;
 
 import java.io.Serializable;
 
-/**
- * Class related to the Invocable Method and its parameters. Basically, this
- * method and its parameters will be serialized and sent to the Cloud.
- */
 public class InvocableMethod implements Serializable {
 
 	private static final long serialVersionUID = -5028632709347192824L;
 
+	private String mAppName;
 	private String mMethodName;
 	private String mClassName;
 	private Object[] mParams;
-	private String mAppVersion;
 	private String mPackageName;
 
-	public InvocableMethod(String packageName, String appVersion, String name, String declaredClass, Object[] params) {
-		this.setAppVersion(appVersion);
+	public InvocableMethod(String packageName, String name, String declaredClass, String appName, Object[] params) {
 		this.mMethodName = name;
 		this.mParams = params;
 		this.mClassName = declaredClass;
+		this.mAppName = appName;
 		this.mPackageName = packageName;
 	}
 
-	public String getMethodId() {
-		String methodId = mClassName + "." + mAppVersion + "." + mMethodName;
-		if (mParams != null) {
-			for (Object object : mParams) {
-				methodId += "." + object.getClass().getSimpleName();
-			}
-		}
-		return methodId;
-	}
 
 	public String getMethodName() {
 		return mMethodName;
@@ -64,13 +51,14 @@ public class InvocableMethod implements Serializable {
 		this.mClassName = className;
 	}
 
-	public String getAppVersion() {
-		return mAppVersion;
+	public String getAppName() {
+		return mAppName;
 	}
 
-	public void setAppVersion(String appVersion) {
-		this.mAppVersion = appVersion;
+	public void setAppName(String appName) {
+		this.mAppName = appName;
 	}
+
 
 	public String getPackageName() {
 		return mPackageName;

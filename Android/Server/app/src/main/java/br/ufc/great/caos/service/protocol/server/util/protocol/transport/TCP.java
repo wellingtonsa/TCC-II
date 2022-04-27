@@ -1,33 +1,30 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.transport;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Base64;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
-import br.ufc.great.caos.service.protocol.server.util.Utils;
+import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
+import br.ufc.great.caos.service.protocol.core.offload.RemoteMethodExecutionService;
 
 
 public class TCP implements ProtocolService {
 
+	Context context;
+
 	ServerSocket ss;
 	Socket s;
-	DataInputStream din;
-	DataOutputStream dout;
+	ObjectInputStream din;
+	ObjectOutputStream dout;
 	BufferedReader br;
 
 	@Override
@@ -36,15 +33,12 @@ public class TCP implements ProtocolService {
 	}
 
 	@Override
-	public boolean connect(String ip, Integer port) {
+	public boolean connect(String ip, Integer port, Context context) {
 		try {
+			this.context = context;
 			ss = new ServerSocket(port);
-			s = ss.accept();
-			din = new DataInputStream(s.getInputStream());
-			dout = new DataOutputStream(s.getOutputStream());
-			br = new BufferedReader(new InputStreamReader(System.in));
-			new RequestHandler().execute();
 			Log.i("TCP", "Server started on port " + port);
+			new RequestHandler().execute();
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -72,38 +66,35 @@ public class TCP implements ProtocolService {
 
 		@Override
 		protected String doInBackground(Void... voids) {
-			String request = "";
-
+			InvocableMethod request = null;
 			try {
 
 				while (true) {
 
-					request = din.readUTF();
+					s = ss.accept();
+					dout = new ObjectOutputStream(s.getOutputStream());
+					din = new ObjectInputStream(s.getInputStream());
+					br = new BufferedReader(new InputStreamReader(System.in));
 
-					if(!request.isEmpty()) {
-						String encodedImage = request;
+					request = (InvocableMethod) din.readObject();
+					if(request != null) {
+						RemoteMethodExecutionService remoteMethodExecution = new RemoteMethodExecutionService(context);
+						Object response = remoteMethodExecution.executeMethod(request);
 
-						byte[] decodedImageByteArray = Base64.decode(encodedImage, Base64.DEFAULT);
-						Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedImageByteArray, 0, decodedImageByteArray.length);
-						Bitmap imagedWithBWFilter = Utils.convertImage(decodedImage);
-
-						ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-						imagedWithBWFilter.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
-						byte[] byteArray = byteStream.toByteArray();
-						encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-						dout.writeUTF(encodedImage);
+						dout.writeObject(response);
 						dout.flush();
-
-						return encodedImage;
 					}
 				}
 			} catch (IOException e) {
 				Log.i("TCP", "Error to proccess:" + e.getMessage());
 				e.printStackTrace();
 				return "";
+			} catch (ClassNotFoundException e) {
+				Log.i("TCP", "Error to proccess:" + e.getMessage());
+				e.printStackTrace();
 			}
 
+			return "";
 
 		}
 	}

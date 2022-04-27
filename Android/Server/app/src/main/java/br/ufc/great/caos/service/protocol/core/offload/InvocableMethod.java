@@ -4,7 +4,7 @@
  * disclose such Confidential Information and shall use it only in accordance
  * with the terms of the license agreement you entered into with LG Electronics.
  *******************************************************************************/
-package br.ufc.great.caos.service.protocol.server.util.offload;
+package br.ufc.great.caos.service.protocol.core.offload;
 
 import java.io.Serializable;
 
@@ -12,27 +12,20 @@ public class InvocableMethod implements Serializable {
 
 	private static final long serialVersionUID = -5028632709347192824L;
 
+	private String mAppName;
 	private String mMethodName;
 	private String mClassName;
 	private Object[] mParams;
 	private String mPackageName;
 
-	public InvocableMethod(String packageName, String name, String declaredClass, Object[] params) {
+	public InvocableMethod(String packageName, String name, String declaredClass, String appName, Object[] params) {
 		this.mMethodName = name;
 		this.mParams = params;
 		this.mClassName = declaredClass;
+		this.mAppName = appName;
 		this.mPackageName = packageName;
 	}
 
-	public String getMethodId() {
-		String methodId = mClassName + "." + mMethodName;
-		if (mParams != null) {
-			for (Object object : mParams) {
-				methodId += "." + object.getClass().getSimpleName();
-			}
-		}
-		return methodId;
-	}
 
 	public String getMethodName() {
 		return mMethodName;
@@ -57,6 +50,15 @@ public class InvocableMethod implements Serializable {
 	public void setClassName(String className) {
 		this.mClassName = className;
 	}
+
+	public String getAppName() {
+		return mAppName;
+	}
+
+	public void setAppName(String appName) {
+		this.mAppName = appName;
+	}
+
 
 	public String getPackageName() {
 		return mPackageName;
