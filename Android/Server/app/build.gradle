@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "br.ufc.great.caos.service.protocol.server"
         minSdkVersion 26
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -47,4 +47,8 @@ dependencies {
     implementation'org.nanohttpd:nanohttpd:2.2.0'
     implementation "app.artyomd.injector:injector-android:0.5.0"
     implementation 'com.google.code.gson:gson:2.9.0'
+
+    implementation project(':broker')
+    implementation project(':netty_parser')
+    implementation project(':parser_commons')
 }

@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.util.Log;
 
 import br.ufc.great.caos.service.protocol.server.model.entity.Server;
@@ -28,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Log.i("Permission", "Permission granted!");
+        } else {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 3);
+            Log.i("Permission", "Permission invoked. Showing permission popup.");
+        }
 
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Log.i("Permission", "Permission granted!");
@@ -37,17 +44,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+
         ProtocolService serviceProtocolMQTT = new MQTT();
         ProtocolService serviceProtocolTCP = new TCP();
         ProtocolService serviceProtocolHTTP = new HTTP();
         //ProtocolService serviceProtocolQUIC = new QUIC();
 
         String IP = Utils.getIPAddress(true);
-        Log.i("IP", IP);
         //DiscoveryThread dt = new DiscoveryThread();
         //dt.run();
 
-        new Server(serviceProtocolMQTT, getApplicationContext()).execute(IP, "8045" );
+        new Server(serviceProtocolMQTT, getApplicationContext()).execute(IP, "8045");;
         new Server(serviceProtocolTCP, getApplicationContext()).execute(IP, "8046");
         new Server(serviceProtocolHTTP, getApplicationContext()).execute(IP, "8047");
         //new Server(serviceProtocolQUIC, getApplicationContext()).execute(IP, "8048");

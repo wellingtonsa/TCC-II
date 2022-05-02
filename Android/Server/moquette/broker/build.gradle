@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 31
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'com.blankj:utilcodex:1.31.0'
+    implementation project(':netty_parser')
+    implementation 'io.netty:netty-all:4.1.44.Final'
+    implementation 'com.lmax:disruptor:3.3.0'
+    implementation 'org.mapdb:mapdb:1.0.6'
+    implementation project(path: ':parser_commons')
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.karumi:dexter:6.2.3'
+    implementation project(path: ':parser_commons')
+    implementation project(path: ':netty_parser')
+}
+

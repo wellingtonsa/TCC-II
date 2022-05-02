@@ -1,9 +1,10 @@
 package br.ufc.great.caos.service.protocol.server.util.protocol.application;
 
+
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -15,24 +16,28 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.UUID;
+
+import org.eclipse.moquette.server.Server;
 
 import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
 import br.ufc.great.caos.service.protocol.core.offload.RemoteMethodExecutionService;
 import br.ufc.great.caos.service.protocol.server.model.services.ProtocolService;
-import br.ufc.great.caos.service.protocol.server.util.Utils;
 
 
 public class MQTT implements ProtocolService {
 
 	private Context context;
 	private MqttClient server;
-	private final String BROKER_URL = "tcp://192.168.1.10:1883";
 
 
 	@Override
 	public boolean init() {
+		Broker broker = new Broker();
+		broker.run();
 		return true;
 	}
 
@@ -40,8 +45,12 @@ public class MQTT implements ProtocolService {
 	public boolean connect(String ip, Integer port, Context context) {
 		try {
 			this.context = context;
+
 			Callback cb = new Callback();
 			MemoryPersistence persistence = new MemoryPersistence();
+
+			String BROKER_URL = "tcp://localhost:1883";
+
 			server = new MqttClient(BROKER_URL, UUID.randomUUID().toString(), persistence);
 			server.connect();
 			server.setCallback(cb);
@@ -106,6 +115,21 @@ public class MQTT implements ProtocolService {
 
 		}
 
+	}
+
+	class Broker implements Runnable {
+		@Override
+		public void run() {
+			try {
+				Server server = new Server();
+				server.startServer();
+				Log.i("MQTT", "MQTT Broker initialized successfully.");
+
+			} catch (IOException e) {
+				Log.i("MQTT", "Error for initiate the MQTT Broker");
+				Log.i("MQTT", e.getMessage());
+			}
+		}
 	}
 
 }

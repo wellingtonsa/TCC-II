@@ -22,7 +22,6 @@ public class MQTT implements ProtocolService {
 
 
 	private MqttClient client;
-	private final String BROKER_URL = "tcp://192.168.1.10:1883";
 	long start = System.currentTimeMillis();
 	long elapsed = 0;
 
@@ -39,6 +38,9 @@ public class MQTT implements ProtocolService {
 		try {
 			Callback cb = new Callback();
 			MemoryPersistence persistence = new MemoryPersistence();
+
+			String BROKER_URL = "tcp://"+ip+":1883";
+
 			client = new MqttClient(BROKER_URL, UUID.randomUUID().toString(), persistence);
 			client.connect();
 			client.setCallback(cb);

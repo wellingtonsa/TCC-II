@@ -26,6 +26,7 @@ public class Server extends AsyncTask<String, Void, Void> {
 		} 
 		
 	}
+
 	public void disconnect() {
 		protocol.disconnect();
 	}
