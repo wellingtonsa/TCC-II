@@ -17,56 +17,7 @@ import java.util.zip.ZipOutputStream;
 public class Utils {
 
 
-    public static void zip(File[] files, File zipFile ) {
-        final int BUFFER_SIZE = 2048;
-
-        BufferedInputStream origin = null;
-        ZipOutputStream out = null;
-        try {
-            out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
-        } catch (FileNotFoundException e) {
-            Log.e("Zip", "Unzip exception", e);
-        }
-
-        try {
-            byte data[] = new byte[BUFFER_SIZE];
-            for ( File file : files ) {
-                FileInputStream fileInputStream = new FileInputStream( file );
-                origin = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
-
-                String filePath = file.getAbsolutePath();
-
-                try {
-                    ZipEntry entry = new ZipEntry( filePath.substring( filePath.lastIndexOf("/") + 1 ) );
-
-                    out.putNextEntry(entry);
-
-                    int count;
-                    while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
-                        out.write(data, 0, count);
-                    }
-                } catch (IOException e) {
-                    Log.e("Zip", "Unzip exception", e);
-                } finally {
-                    try {
-                        origin.close();
-                    } catch (IOException e) {
-                        Log.e("Zip", "Unzip exception", e);
-                    }
-                }
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("Zip", "Unzip exception", e);
-        } finally {
-            try {
-                out.close();
-            } catch (IOException e) {
-                Log.e("Zip", "Unzip exception", e);
-            }
-        }
-    }
-
-    public static void unzip(String zipFile, String location) {
+    public static void extract(String zipFile, String location) {
         final int BUFFER_SIZE = 2048;
         int size;
         byte[] buffer = new byte[BUFFER_SIZE];
@@ -88,7 +39,7 @@ public class Utils {
                     }
                     else {
                         if (path.endsWith(".dex")) {
-                            FileOutputStream fout = new FileOutputStream(path, false);
+                            FileOutputStream fout = new FileOutputStream(path.replace("classes.dex", "metadata.caos"), false);
                             try {
                                 while ( (size = zin.read(buffer, 0, BUFFER_SIZE)) != -1 ) {
                                     fout.write(buffer, 0, size);

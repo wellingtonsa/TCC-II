@@ -48,9 +48,8 @@ public class MetadataExtractor {
     }
 
     public void extract() {
-        createFolder(Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+name+"/dex");
-        File newFile = new File((Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+name), name + ".caos");
-        ExtractThread extractThread = new ExtractThread(context, file, newFile,  Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+ name+"/dex");
+        createFolder(Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+name);
+        ExtractThread extractThread = new ExtractThread(context, file,  Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+ name);
         extractThread.start();
 
     }
@@ -60,9 +59,8 @@ public class MetadataExtractor {
         private Context context;
         private String path;
 
-        public ExtractThread(Context context, File file, File newFile, String path) {
+        public ExtractThread(Context context, File file, String path) {
             this.file = file;
-            this.newFile = newFile;
             this.context = context;
             this.path = path;
         }
@@ -70,30 +68,8 @@ public class MetadataExtractor {
         @Override
         public void run() {
             super.run();
-
-            Utils.unzip(file.getAbsolutePath(), path);
-            Utils.zip(new File(path).listFiles(), newFile);
-
+            Utils.extract(file.getAbsolutePath(), path);
             Log.d("ExceptionApk", "Extraction finished!");
-
-            /*InputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(file);
-
-            OutputStream outputStream = new FileOutputStream(newFile);
-                byte[] buf = new byte[9192];
-                int len;
-                while ((len = inputStream.read(buf)) > 0) {
-                    outputStream.write(buf, 0, len);
-                }
-                inputStream.close();
-                outputStream.close();
-                Log.d("ExceptionApk", "Extraction finished!");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
 
         }
     }

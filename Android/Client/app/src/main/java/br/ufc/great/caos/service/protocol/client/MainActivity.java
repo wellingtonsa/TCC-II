@@ -28,6 +28,8 @@ import java.util.concurrent.ExecutionException;
 import br.ufc.great.caos.service.protocol.client.model.entity.Client;
 import br.ufc.great.caos.service.protocol.client.model.services.ProtocolService;
 import br.ufc.great.caos.service.protocol.client.util.injection.MetadataExtractor;
+import br.ufc.great.caos.service.protocol.client.util.injection.MetadataSender;
+import br.ufc.great.caos.service.protocol.client.util.network.DiscoveryServer;
 import br.ufc.great.caos.service.protocol.client.util.protocol.application.HTTP;
 import br.ufc.great.caos.service.protocol.client.util.protocol.application.MQTT;
 import br.ufc.great.caos.service.protocol.client.util.protocol.transport.TCP;
@@ -72,16 +74,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        String serverIP = "192.168.1.4";
 
         MetadataExtractor extractor = new MetadataExtractor(MainActivity.this, getApplicationContext().getPackageName(), getPackageManager());
         extractor.extract();
 
-        //serverIP = new DiscoveryServer().execute().get();
-            if(!serverIP.isEmpty()){
+        try {
+            String serverIP = "";
 
+            serverIP = new DiscoveryServer().execute().get();
 
-                spinnerProtocol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        if(!serverIP.isEmpty()){
+
+            String finalServerIP = serverIP;
+
+            MetadataSender metadataSender = new MetadataSender(finalServerIP, getApplicationContext(), getPackageManager());
+            metadataSender.run();
+
+            spinnerProtocol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         try {
@@ -89,19 +98,19 @@ public class MainActivity extends AppCompatActivity {
                                 case "MQTT":
                                     clientProtocol = new MQTT();
                                     if(client != null) client.disconnect();
-                                    client = new Client(clientProtocol).execute(serverIP, "8045").get();
+                                    client = new Client(clientProtocol).execute(finalServerIP, "8045").get();
                                     Image.setImageResource(R.drawable.paradise_05mb);
                                     break;
                                 case "TCP":
                                     clientProtocol = new TCP();
                                     if(client != null) client.disconnect();
-                                    client = new Client(clientProtocol).execute(serverIP, "8046").get();
+                                    client = new Client(clientProtocol).execute(finalServerIP, "8046").get();
                                     Image.setImageResource(R.drawable.paradise_05mb);
                                     break;
                                 case "HTTP":
                                     clientProtocol = new HTTP();
                                     if(client != null) client.disconnect();
-                                    client = new Client(clientProtocol).execute(serverIP, "8047").get();
+                                    client = new Client(clientProtocol).execute(finalServerIP, "8047").get();
                                     Image.setImageResource(R.drawable.paradise_05mb);
                                     break;
                                 default:
@@ -146,8 +155,13 @@ public class MainActivity extends AppCompatActivity {
                         Image.setImageBitmap(decodedImage);
                     }
                 });
-
             }
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 }

@@ -35,7 +35,7 @@ public class MetadataLoader {
             OutputStream dexWriter = null;
 
             int BUF_SIZE = 8 * 1024;
-            File file = new File((Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+applicationName+"/dex"), "classes.dex");
+            File file = new File((Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+applicationName), "metadata.caos");
             FileInputStream fileInputStream = new FileInputStream(file);
             bis = new BufferedInputStream(fileInputStream);
             dexWriter = new BufferedOutputStream(
