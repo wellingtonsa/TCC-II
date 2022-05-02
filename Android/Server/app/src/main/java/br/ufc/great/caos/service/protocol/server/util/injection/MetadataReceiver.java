@@ -17,6 +17,8 @@ public class MetadataReceiver extends Thread {
     final int BUFFER_SIZE = 2048;
 
     ServerSocket serverSocket;
+    BufferedOutputStream bos;
+    DataInputStream d;
 
     @Override
     public void run() {
@@ -25,41 +27,47 @@ public class MetadataReceiver extends Thread {
         try {
             serverSocket = new ServerSocket(8088);
 
+            String appName = "";
+            int fileLength = 0;
+
             while (true) {
                 socket = serverSocket.accept();
 
                 Log.i("MetadataReceiver", "Received Metadata");
+                d = new DataInputStream(socket.getInputStream());
+                appName = d.readUTF();
+                fileLength = (int) d.readLong();
 
-                InputStream in = socket.getInputStream();
-                String appName = "Client";
-                /*try (DataInputStream d = new DataInputStream(in)) {
-                    appName = d.readUTF();
-                }*/
 
                 new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+appName).mkdirs();
                 File file = new File((Environment.getExternalStorageDirectory().getAbsolutePath() + "/CAOS/"+appName), "metadata.caos");
 
-                byte[] bytes = new byte[BUFFER_SIZE];
-                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-                while (true) {
-                    int bytesRead = in.read(bytes);
-                    if (bytesRead <= 0) break;
-                    bos.write(bytes, 0, bytesRead);
-                    // Now it loops around to read some more.
-                }
+                byte[] bytes = new byte[fileLength];
+                bos = new BufferedOutputStream(new FileOutputStream(file));
+
+                bos.write(bytes, 0, fileLength);
 
 
                 Log.i("MetadataReceiver", "Metadata transfer completed successfully.");
-                bos.close();
-                socket.close();
-                serverSocket.close();
-                bos.close();
-                in.close();
+
+                if(!appName.isEmpty() && fileLength > 0) {
+                    bos.close();
+                    socket.close();
+                    serverSocket.close();
+                    d.close();
+                }
 
             }
         } catch (IOException e) {
-            Log.i("MetadataReceiver", e.getMessage());
-            e.printStackTrace();
+            try {
+                d.close();
+                bos.close();
+                socket.close();
+                serverSocket.close();
+            } catch (IOException ioException) {
+                Log.i("MetadataReceiver", ioException.getMessage());
+                ioException.printStackTrace();
+            }
         }
     }
 }

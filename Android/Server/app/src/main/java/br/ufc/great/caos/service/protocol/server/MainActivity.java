@@ -52,11 +52,10 @@ public class MainActivity extends AppCompatActivity {
         //ProtocolService serviceProtocolQUIC = new QUIC();
 
         String IP = Utils.getIPAddress(true);
-        DiscoveryThread dt = new DiscoveryThread();
-        dt.run();
 
-        MetadataReceiver metadataReceiver = new MetadataReceiver();
-        metadataReceiver.run();
+        new DiscoveryThread().run();;
+
+        new MetadataReceiver().run();
 
         new Server(serviceProtocolMQTT, getApplicationContext()).execute(IP, "8045");;
         new Server(serviceProtocolTCP, getApplicationContext()).execute(IP, "8046");

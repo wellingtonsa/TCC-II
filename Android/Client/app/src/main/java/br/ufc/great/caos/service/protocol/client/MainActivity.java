@@ -74,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        MetadataExtractor extractor = new MetadataExtractor(MainActivity.this, getApplicationContext().getPackageName(), getPackageManager());
-        extractor.extract();
+       new MetadataExtractor(MainActivity.this, getApplicationContext().getPackageName(), getPackageManager()).extract();
 
         try {
             String serverIP = "";
@@ -87,8 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             String finalServerIP = serverIP;
 
-            MetadataSender metadataSender = new MetadataSender(finalServerIP, getApplicationContext(), getPackageManager());
-            metadataSender.run();
+            new MetadataSender(finalServerIP, getApplicationContext(), getPackageManager()).run();
 
             spinnerProtocol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -99,19 +96,19 @@ public class MainActivity extends AppCompatActivity {
                                     clientProtocol = new MQTT();
                                     if(client != null) client.disconnect();
                                     client = new Client(clientProtocol).execute(finalServerIP, "8045").get();
-                                    Image.setImageResource(R.drawable.paradise_05mb);
+                                    Image.setImageResource(R.drawable.paradise_8mb);
                                     break;
                                 case "TCP":
                                     clientProtocol = new TCP();
                                     if(client != null) client.disconnect();
                                     client = new Client(clientProtocol).execute(finalServerIP, "8046").get();
-                                    Image.setImageResource(R.drawable.paradise_05mb);
+                                    Image.setImageResource(R.drawable.paradise_8mb);
                                     break;
                                 case "HTTP":
                                     clientProtocol = new HTTP();
                                     if(client != null) client.disconnect();
                                     client = new Client(clientProtocol).execute(finalServerIP, "8047").get();
-                                    Image.setImageResource(R.drawable.paradise_05mb);
+                                    Image.setImageResource(R.drawable.paradise_8mb);
                                     break;
                                 default:
                                     break;
@@ -133,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 btnSend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.paradise_05mb);
+                        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.paradise_8mb);
                         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
                         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
