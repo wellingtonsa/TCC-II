@@ -96,19 +96,19 @@ public class MainActivity extends AppCompatActivity {
                                     clientProtocol = new MQTT();
                                     if(client != null) client.disconnect();
                                     client = new Client(clientProtocol).execute(finalServerIP, "8045").get();
-                                    Image.setImageResource(R.drawable.paradise_8mb);
+                                    Image.setImageResource(R.drawable.paradise_05mb);
                                     break;
                                 case "TCP":
                                     clientProtocol = new TCP();
                                     if(client != null) client.disconnect();
                                     client = new Client(clientProtocol).execute(finalServerIP, "8046").get();
-                                    Image.setImageResource(R.drawable.paradise_8mb);
+                                    Image.setImageResource(R.drawable.paradise_05mb);
                                     break;
                                 case "HTTP":
                                     clientProtocol = new HTTP();
                                     if(client != null) client.disconnect();
                                     client = new Client(clientProtocol).execute(finalServerIP, "8047").get();
-                                    Image.setImageResource(R.drawable.paradise_8mb);
+                                    Image.setImageResource(R.drawable.paradise_05mb);
                                     break;
                                 default:
                                     break;
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 btnSend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.paradise_8mb);
+                        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.paradise_05mb);
                         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
                         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
