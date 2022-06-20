@@ -4,11 +4,15 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -68,7 +72,43 @@ public class Utils {
         }
     }
 
-    public void doSomething(String test){
-        Log.i("doSomething", "Do something with"+test);
+    public static byte[] serializeObject(Object obj) {
+        try {
+            ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+            ObjectOutputStream oos = null;
+
+            oos = new ObjectOutputStream(bytesOut);
+
+            oos.writeObject(obj);
+            oos.flush();
+            byte[] bytes = bytesOut.toByteArray();
+            bytesOut.close();
+            oos.close();
+            return bytes;
+        } catch (IOException e) {
+            Log.i("serializeObject", "Error to serialize the object: "+e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
+
+    public static Object deserializeObject(byte[] data){
+        try {
+            ByteArrayInputStream bytesIn = new ByteArrayInputStream(data);
+            ObjectInputStream ois = new ObjectInputStream(bytesIn);
+            Object obj = (Object) ois.readObject();
+            ois.close();
+
+            return obj;
+        } catch( IOException e){
+            Log.i("deserializeObject", "Error to deserialize the object: "+e.getMessage());
+            return null;
+        } catch (ClassNotFoundException e) {
+            Log.i("deserializeObject", "Error to find the class: "+e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

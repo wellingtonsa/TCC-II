@@ -7,7 +7,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.os.SystemClock;
 import android.util.Log;
 
 import br.ufc.great.caos.service.protocol.server.model.entity.Server;
@@ -17,6 +16,7 @@ import br.ufc.great.caos.service.protocol.server.util.injection.MetadataReceiver
 import br.ufc.great.caos.service.protocol.server.util.network.DiscoveryThread;
 import br.ufc.great.caos.service.protocol.server.util.protocol.application.HTTP;
 import br.ufc.great.caos.service.protocol.server.util.protocol.application.MQTT;
+import br.ufc.great.caos.service.protocol.server.util.protocol.transport.RUDP;
 import br.ufc.great.caos.service.protocol.server.util.protocol.transport.TCP;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        System.loadLibrary("quiche_jni");
 
         super.onCreate(savedInstanceState);
 
@@ -49,18 +47,18 @@ public class MainActivity extends AppCompatActivity {
         ProtocolService serviceProtocolMQTT = new MQTT();
         ProtocolService serviceProtocolTCP = new TCP();
         ProtocolService serviceProtocolHTTP = new HTTP();
-        //ProtocolService serviceProtocolQUIC = new QUIC();
+        ProtocolService serviceProtocolRUDP = new RUDP();
 
         String IP = Utils.getIPAddress(true);
 
         new DiscoveryThread().run();;
 
-        new MetadataReceiver().run();
+        new MetadataReceiver().start();
 
         new Server(serviceProtocolMQTT, getApplicationContext()).execute(IP, "8045");;
         new Server(serviceProtocolTCP, getApplicationContext()).execute(IP, "8046");
         new Server(serviceProtocolHTTP, getApplicationContext()).execute(IP, "8047");
-        //new Server(serviceProtocolQUIC, getApplicationContext()).execute(IP, "8048");
+        new Server(serviceProtocolRUDP, getApplicationContext()).execute(IP, "8048");
 
     }
 }

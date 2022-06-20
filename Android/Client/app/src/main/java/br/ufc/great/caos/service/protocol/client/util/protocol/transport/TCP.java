@@ -35,19 +35,18 @@ public class TCP implements ProtocolService {
 
 	@Override
 	public boolean connect(String ip, Integer port) {
-		Socket s;
 		try {
 			s = new Socket(ip,port);
 			din=new ObjectInputStream(s.getInputStream());
 			dout= new ObjectOutputStream(s.getOutputStream());
 			br=new BufferedReader(new InputStreamReader(System.in));
-			Log.i("TCP", "Connected to the server ("+ip+") at port: "+port);
+			Log.i(isInstanceOf(), "Connected to the server ("+ip+") at port: "+port);
 			return true;
 		} catch (UnknownHostException e) {
-			Log.i("TCP", "Connection error: " + e.getMessage());
+			Log.i(isInstanceOf(), "Connection error: " + e.getMessage());
 			return false;
 		} catch (IOException e) {
-			Log.i("TCP", "Connection error: " + e.getMessage());
+			Log.i(isInstanceOf(), "Connection error: " + e.getMessage());
 			return false;
 		}  
 
@@ -64,7 +63,7 @@ public class TCP implements ProtocolService {
 			}
 			return true;
 		} catch (IOException e) {
-			Log.i("TCP", "Error to disconnect:" + e.getMessage());
+			Log.i(isInstanceOf(), "Error to disconnect:" + e.getMessage());
 			return false;
 		}
 	}
@@ -90,10 +89,10 @@ public class TCP implements ProtocolService {
 			}
 			return response;
 		} catch (IOException e) {
-			Log.i("TCP", "Error to send a message:"+e.getMessage());
+			Log.i(isInstanceOf(), "Error to send a message:"+e.getMessage());
 			return "";
 		} catch (ClassNotFoundException e) {
-			Log.i("TCP", "Error to send a message:"+e.getMessage());
+			Log.i(isInstanceOf(), "Error to send a message:"+e.getMessage());
 		}
 
 		return response;

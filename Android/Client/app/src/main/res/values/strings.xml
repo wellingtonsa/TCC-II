@@ -4,5 +4,6 @@
         <item>HTTP</item>
         <item>MQTT</item>
         <item>TCP</item>
+        <item>RUDP</item>
     </string-array>
 </resources>

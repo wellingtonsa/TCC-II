@@ -37,12 +37,12 @@ public class TCP implements ProtocolService {
 		try {
 			this.context = context;
 			ss = new ServerSocket(port);
-			Log.i("TCP", "Server started on port " + port);
-			new RequestHandler().execute();
+			Log.i(isInstanceOf(), "Server started on port " + port);
+			new RequestHandler().start();
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			Log.i("TCP", "Connection error: " + e.getMessage());
+			Log.i(isInstanceOf(), "Connection error: " + e.getMessage());
 			return false;
 		}
 
@@ -56,16 +56,16 @@ public class TCP implements ProtocolService {
 			ss.close();
 			return true;
 		} catch (IOException e) {
-			Log.i("TCP", "Error to disconnect:" + e.getMessage());
+			Log.i(isInstanceOf(), "Error to disconnect:" + e.getMessage());
 			return false;
 		}
 
 	}
 
-	private class RequestHandler extends AsyncTask<Void, Void, String> {
+	private class RequestHandler extends Thread {
 
 		@Override
-		protected String doInBackground(Void... voids) {
+		public void run() {
 			InvocableMethod request = null;
 			try {
 
@@ -86,16 +86,12 @@ public class TCP implements ProtocolService {
 					}
 				}
 			} catch (IOException e) {
-				Log.i("TCP", "Error to proccess:" + e.getMessage());
+				Log.i(isInstanceOf(), "Error to proccess:" + e.getMessage());
 				e.printStackTrace();
-				return "";
 			} catch (ClassNotFoundException e) {
-				Log.i("TCP", "Error to proccess:" + e.getMessage());
+				Log.i(isInstanceOf(), "Error to proccess:" + e.getMessage());
 				e.printStackTrace();
 			}
-
-			return "";
-
 		}
 	}
 

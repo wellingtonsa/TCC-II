@@ -33,6 +33,7 @@ import br.ufc.great.caos.service.protocol.client.util.network.DiscoveryServer;
 import br.ufc.great.caos.service.protocol.client.util.protocol.application.HTTP;
 import br.ufc.great.caos.service.protocol.client.util.protocol.application.MQTT;
 import br.ufc.great.caos.service.protocol.client.util.protocol.transport.TCP;
+import br.ufc.great.caos.service.protocol.client.util.protocol.transport.RUDP;
 import br.ufc.great.caos.service.protocol.core.offload.InvocableMethod;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        System.loadLibrary("quiche_jni");
 
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
            Log.i("Permission", "Permission granted!");
@@ -108,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
                                     clientProtocol = new HTTP();
                                     if(client != null) client.disconnect();
                                     client = new Client(clientProtocol).execute(finalServerIP, "8047").get();
+                                    Image.setImageResource(R.drawable.paradise_05mb);
+                                    break;
+                                case "RUDP":
+                                    clientProtocol = new RUDP();
+                                    if(client != null) client.disconnect();
+                                    client = new Client(clientProtocol).execute(finalServerIP, "8048").get();
                                     Image.setImageResource(R.drawable.paradise_05mb);
                                     break;
                                 default:

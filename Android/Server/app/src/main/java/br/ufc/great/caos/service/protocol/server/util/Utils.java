@@ -2,12 +2,11 @@ package br.ufc.great.caos.service.protocol.server.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
-
-import io.quiche4j.http3.Http3Header;
 
 public class Utils {
 
@@ -91,6 +90,44 @@ public class Utils {
             }
         } catch (Exception ignored) { }
         return "";
+    }
+
+    public static byte[] serializeObject(Object obj) {
+        try {
+            ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+            ObjectOutputStream oos = null;
+
+            oos = new ObjectOutputStream(bytesOut);
+
+            oos.writeObject(obj);
+            oos.flush();
+            byte[] bytes = bytesOut.toByteArray();
+            bytesOut.close();
+            oos.close();
+            return bytes;
+        } catch (IOException e) {
+            Log.i("serializeObject", "Error to serialize the object: "+e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object deserializeObject(byte[] data){
+        try {
+            ByteArrayInputStream bytesIn = new ByteArrayInputStream(data);
+            ObjectInputStream ois = new ObjectInputStream(bytesIn);
+            Object obj = (Object) ois.readObject();
+            ois.close();
+
+            return obj;
+        } catch( IOException e){
+            Log.i("deserializeObject", "Error to deserialize the object: "+e.getMessage());
+            return null;
+        } catch (ClassNotFoundException e) {
+            Log.i("deserializeObject", "Error to find the class: "+e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
