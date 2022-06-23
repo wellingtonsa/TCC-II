@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView Image = (ImageView) findViewById(R.id.image);
 
         Image.setBackgroundColor(Color.WHITE);
-        Image.setImageResource(R.drawable.paradise_8mb);
+        Image.setImageResource(R.drawable.paradise_05mb);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.protocols, android.R.layout.simple_spinner_item);

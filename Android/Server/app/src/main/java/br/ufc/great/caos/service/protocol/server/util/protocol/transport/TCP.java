@@ -78,8 +78,18 @@ public class TCP implements ProtocolService {
 
 					request = (InvocableMethod) din.readObject();
 					if(request != null) {
+
+						Log.i("TIMESTAMP", "UPLOAD:"+isInstanceOf()+":"+ (System.currentTimeMillis() - request.getTimestamp()));
+
 						RemoteMethodExecutionService remoteMethodExecution = new RemoteMethodExecutionService(context);
+
+						long start = System.currentTimeMillis();
+						long elapsed = 0;
+
 						Object response = remoteMethodExecution.executeMethod(request);
+
+						elapsed = System.currentTimeMillis() - start;
+						Log.i("TIMESTAMP", "METHOD:"+isInstanceOf()+":"+String.valueOf(elapsed));
 
 						dout.writeObject(response);
 						dout.flush();

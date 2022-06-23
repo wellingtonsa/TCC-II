@@ -75,7 +75,7 @@ public class RUDP implements ProtocolService {
     @Override
     public Object executeOffload(InvocableMethod method) {
         start = System.currentTimeMillis();
-
+        method.setTimestamp(start);
         Object response = "";
         try {
             if(method != null) {
@@ -89,7 +89,7 @@ public class RUDP implements ProtocolService {
                 response = din.readObject();
 
                 elapsed = System.currentTimeMillis() - start;
-                Log.i(isInstanceOf(), String.valueOf(elapsed));
+                Log.i("TIMESTAMP", "TOTAL:"+isInstanceOf()+":"+String.valueOf(elapsed));
 
             }
             return response;

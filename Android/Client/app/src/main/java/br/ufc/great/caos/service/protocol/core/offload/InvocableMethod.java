@@ -18,6 +18,8 @@ public class InvocableMethod implements Serializable {
 	private Object[] mParams;
 	private String mPackageName;
 
+	private long timestamp;
+
 	public InvocableMethod(String packageName, String name, String declaredClass, String appName, Object[] params) {
 		this.mMethodName = name;
 		this.mParams = params;
@@ -66,6 +68,14 @@ public class InvocableMethod implements Serializable {
 
 	public void setPackageName(String mPackageName) {
 		this.mPackageName = mPackageName;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 }

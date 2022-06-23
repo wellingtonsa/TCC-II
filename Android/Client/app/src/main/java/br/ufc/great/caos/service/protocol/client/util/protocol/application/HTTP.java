@@ -55,6 +55,8 @@ public class HTTP implements ProtocolService {
 	@Override
 	public Object executeOffload(InvocableMethod method) {
 		start = System.currentTimeMillis();
+
+		method.setTimestamp(start);
 		try {
 			con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
@@ -77,7 +79,7 @@ public class HTTP implements ProtocolService {
 				elapsed = System.currentTimeMillis() - start;
 
 				Object response = new Gson().fromJson(result.toString("UTF-8"), Object.class);
-				Log.i(isInstanceOf(), String.valueOf(elapsed));
+				Log.i("TIMESTAMP", "TOTAL:"+isInstanceOf()+":"+String.valueOf(elapsed));
 
 				return response;
 			}

@@ -69,6 +69,7 @@ public class MQTT implements ProtocolService {
 	@Override
 	public Object executeOffload(InvocableMethod method) {
 		start = System.currentTimeMillis();
+		method.setTimestamp(start);
 		try {
 			Gson gson = new Gson();
 			byte[] out = gson.toJson(method).getBytes();
@@ -111,7 +112,7 @@ public class MQTT implements ProtocolService {
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
 			elapsed = System.currentTimeMillis() - start;
 			response = new Gson().fromJson(message.toString(), Object.class);
-			Log.i(isInstanceOf(), String.valueOf(elapsed));
+			Log.i("TIMESTAMP", "TOTAL:"+isInstanceOf()+":"+String.valueOf(elapsed));
 		}
 
 	}

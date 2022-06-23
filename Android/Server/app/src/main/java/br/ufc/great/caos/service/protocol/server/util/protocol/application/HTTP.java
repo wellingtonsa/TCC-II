@@ -71,14 +71,20 @@ public class HTTP implements ProtocolService {
 					session.parseBody(body);
 
 					JSONObject JSONBody = new JSONObject(body.get("postData"));
-					long start = System.currentTimeMillis();
-					long elapsed = 0;
 
 					InvocableMethod request = new Gson().fromJson(JSONBody.toString(), InvocableMethod.class);
 
+					Log.i("TIMESTAMP", "UPLOAD:"+isInstanceOf()+":"+ (System.currentTimeMillis() - request.getTimestamp()));
 
 					RemoteMethodExecutionService remoteMethodExecution = new RemoteMethodExecutionService(context);
+
+					long start = System.currentTimeMillis();
+					long elapsed = 0;
+
 					Object response = remoteMethodExecution.executeMethod(request);
+
+					elapsed = System.currentTimeMillis() - start;
+					Log.i("TIMESTAMP", "METHOD:"+isInstanceOf()+":"+String.valueOf(elapsed));
 
 					return newFixedLengthResponse(new Gson().toJson(response));
 				} catch (IOException e) {

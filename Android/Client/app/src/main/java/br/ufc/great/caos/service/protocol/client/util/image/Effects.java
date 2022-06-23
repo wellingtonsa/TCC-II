@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 
 public class Effects {
     public String BlackAndWhite(String encodedImage){
+
         byte[] decodedImageByteArray = Base64.decode(encodedImage, Base64.DEFAULT);
         Bitmap original = BitmapFactory.decodeByteArray(decodedImageByteArray, 0, decodedImageByteArray.length);
 

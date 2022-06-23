@@ -98,18 +98,20 @@ public class MQTT implements ProtocolService {
 
 		@Override
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
-			Log.i("MQTT", "Received message");
-			long start = System.currentTimeMillis();
-			long elapsed = 0;
-
 
 			InvocableMethod request = new Gson().fromJson(message.toString(), InvocableMethod.class);
 
+			Log.i("TIMESTAMP", "UPLOAD:"+isInstanceOf()+":"+ (System.currentTimeMillis() - request.getTimestamp()));
 
 			RemoteMethodExecutionService remoteMethodExecution = new RemoteMethodExecutionService(context);
+
+			long start = System.currentTimeMillis();
+			long elapsed = 0;
+
 			Object response = remoteMethodExecution.executeMethod(request);
 
-			Log.i(isInstanceOf(), String.valueOf(elapsed));
+			elapsed = System.currentTimeMillis() - start;
+			Log.i("TIMESTAMP", "METHOD:"+isInstanceOf()+":"+String.valueOf(elapsed));
 
 			server.publish("/offloading/result", new MqttMessage(new Gson().toJson(response).getBytes()));
 
