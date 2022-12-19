@@ -41,23 +41,32 @@ public class MainActivity extends AppCompatActivity {
     ProtocolService clientProtocol = null;
     Client client = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Spinner spinnerProtocol = (Spinner) findViewById(R.id.s_protocols);
+        Spinner spinnerImages = (Spinner) findViewById(R.id.s_images);
         Button btnSend = (Button) findViewById(R.id.btn_enviar);
         ImageView Image = (ImageView) findViewById(R.id.image);
 
         Image.setBackgroundColor(Color.WHITE);
         Image.setImageResource(R.drawable.paradise_05mb);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> adapterProtocols = ArrayAdapter.createFromResource(this,
                 R.array.protocols, android.R.layout.simple_spinner_item);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerProtocol.setAdapter(adapter);
+        adapterProtocols.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerProtocol.setAdapter(adapterProtocols);
+
+        ArrayAdapter<CharSequence> adapterImages = ArrayAdapter.createFromResource(this,
+                R.array.images, android.R.layout.simple_spinner_item);
+
+        adapterImages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerImages.setAdapter(adapterImages);
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -76,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
        new MetadataExtractor(MainActivity.this, getApplicationContext().getPackageName(), getPackageManager()).extract();
 
-        try {
+        /*try {
             String serverIP = "";
 
             serverIP = new DiscoveryServer().execute().get();
@@ -164,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 }

@@ -16,6 +16,7 @@ import br.ufc.great.caos.service.protocol.server.util.injection.MetadataReceiver
 import br.ufc.great.caos.service.protocol.server.util.network.DiscoveryThread;
 import br.ufc.great.caos.service.protocol.server.util.protocol.application.HTTP;
 import br.ufc.great.caos.service.protocol.server.util.protocol.application.MQTT;
+import br.ufc.great.caos.service.protocol.server.util.protocol.network.IPv4;
 import br.ufc.great.caos.service.protocol.server.util.protocol.transport.RUDP;
 import br.ufc.great.caos.service.protocol.server.util.protocol.transport.TCP;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         ProtocolService serviceProtocolTCP = new TCP();
         ProtocolService serviceProtocolHTTP = new HTTP();
         ProtocolService serviceProtocolRUDP = new RUDP();
+        ProtocolService serviceProtocolIPv4 = new IPv4();
 
         String IP = Utils.getIPAddress(true);
 
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         new Server(serviceProtocolTCP, getApplicationContext()).execute(IP, "8046");
         new Server(serviceProtocolHTTP, getApplicationContext()).execute(IP, "8047");
         new Server(serviceProtocolRUDP, getApplicationContext()).execute(IP, "8048");
+        new Server(serviceProtocolIPv4, getApplicationContext()).execute(IP, "8049");
 
     }
 }

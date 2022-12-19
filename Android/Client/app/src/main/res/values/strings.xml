@@ -6,4 +6,11 @@
         <item>TCP</item>
         <item>RUDP</item>
     </string-array>
+    <string-array name="images">
+        <item>500 Kilobytes</item>
+        <item>1 Megabyte</item>
+        <item>2 Megabytes</item>
+        <item>4 Megabytes</item>
+        <item>8 Megabytes</item>
+    </string-array>
 </resources>
